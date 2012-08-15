@@ -18,7 +18,8 @@ echo Please add the following to the .profile file in your home directory:
 echo
 echo GITHUB_USER=$NAME
 echo GITHUB_TOKEN=$TOKEN
-echo "GITHUB_REPOS=ajaxorg/cloud9,lennartcl/gitl # comma-separated list of repositories you'd like to include in git-list-pull-requests"
+echo "GITHUB_REPOS= # comma-separated list of repositories you'd like to include in git-list-pull-requests (e.g., lennartcl/gitl,ajaxorg/cloud9)"
+echo "GITHUB_REPO_DIRS= # comma-separated list of coresponding local clones"
 if ! which git-la &>/dev/null; then
   echo PATH=\$PATH:`cd $(dirname $0); pwd`
 fi
