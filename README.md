@@ -22,7 +22,7 @@ Submit a GitHub pull request of the current or specified branch. Checks if it is
 
 ### git-out
 
-Show an overview of all outgoing branches.
+Show an overview of all outgoing branches. Branches starting with `_` are not fully shown. 
 
 Arguments:
 
