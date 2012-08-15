@@ -12,28 +12,6 @@ settings to add to the `.profile` file in your home directory.
 Commands
 --------
 
-### git-get-branch
-
-Show the current branch.
-
-### git-info
-
-Show information about the current repository.
-
-### git-is-current
-
-Determine if the current branch is up-to-date compared to the current branch.
-
-Arguments:
-
-* `-f`             Don't fetch
-* `-q`             Be quited
-* `origin/BRANCH`  Compare to branch origin/BRANCH instead of origin/master
-
-### git-keep-alive
-
-Maintains an open connection to speed up github access. See http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/.
-
 ### git-l
 
 Quick log of the current branch, compared to origin/master.
@@ -52,6 +30,27 @@ Arguments:
 * `BRANCH`   Only show branch BRANCH
 * `head`     Only show the current branch
 
+### git-is-current
+
+Determine if the current branch is up-to-date compared to the current branch.
+
+Arguments:
+
+* `-f`             Don't fetch
+* `-q`             Be quited
+* `origin/BRANCH`  Compare to branch origin/BRANCH instead of origin/master
+
+### git-keep-alive
+
+Maintains an open connection to speed up github access. See http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/.
+
+### git-get-branch
+
+Show the current branch.
+
+### git-info
+
+Show information about the current repository.
 License (MIT)
 -------------
 
