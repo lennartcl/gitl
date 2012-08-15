@@ -41,6 +41,10 @@ Quick log of the current branch, compared to origin/master.
 
 Submit a github pull request of the current or specified branch. Opens your browser.
 
+`git-out`
+
+Show an overview of all outgoing branches.
+
 License (MIT)
 -------------
 
