@@ -12,36 +12,37 @@ settings to add to the `.profile` file in your home directory.
 Commands
 --------
 
-`git-get-branch`
+### git-get-branch
 
 Show the current branch.
 
-`git-info`
+### git-info
 
 Show information about the current repository.
 
-`git-is-current`
+### git-is-current
 
 Determine if the current branch is up-to-date compared to the current branch.
 
 Arguments:
--f             Don't fetch
--q             Be quited
-origin/BRANCH  Compare to branch origin/BRANCH instead of origin/master
 
-`git-keep-alive`
+* `-f`             Don't fetch
+* `-q`             Be quited
+* `origin/BRANCH`  Compare to branch origin/BRANCH instead of origin/master
 
-Maintains a connection to speed up github access. See http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/.
+### git-keep-alive
 
-`git-l`
+Maintains an open connection to speed up github access. See http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/.
+
+### git-l
 
 Quick log of the current branch, compared to origin/master.
 
-`git-pull-request`
+### git-pull-request
 
 Submit a github pull request of the current or specified branch. Opens your browser.
 
-`git-out`
+### git-out
 
 Show an overview of all outgoing branches.
 
