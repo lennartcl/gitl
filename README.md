@@ -32,13 +32,14 @@ Arguments:
 
 ### git-is-current
 
-Determine if the current branch is up-to-date compared to the current branch.
+Determine if the current or specified branch is up-to-date compared to the current branch.
 
 Arguments:
 
 * `-f`             Don't fetch
 * `-q`             Be quited
 * `origin/BRANCH`  Compare to branch origin/BRANCH instead of origin/master
+* `BRANCH`         Use selected branch
 
 ### git-keep-alive
 
