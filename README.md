@@ -18,7 +18,7 @@ Quick log of the current branch, compared to origin/master.
 
 ### git-pull-request
 
-Submit a github pull request of the current or specified branch. Opens your browser.
+Submit a GitHub pull request of the current or specified branch. Checks if it is still up-to-date using `git-is-current`, then opens your browser.
 
 ### git-out
 
