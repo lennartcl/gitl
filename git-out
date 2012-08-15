@@ -70,8 +70,13 @@ done
 
 if [ "$FETCHERS" != "" ]; then
   if [ ! $NO_FETCH ]; then
-    git list-pull-requests -q >/tmp/.git-out-requests &
-    PULLS=$!
+    if which git-list-pull-requests &>/dev/null; then
+      git list-pull-requests -q >/tmp/.git-out-requests &
+      PULLS=$!
+    else
+      echo >/tmp/.git-out-requests &
+      PULLS=$!
+    fi
     echo -n "`echo $FETCHERS | grep -oE '[^ ].*'`: fetching... "
     SUCCESS=
     git fetch -q origin
