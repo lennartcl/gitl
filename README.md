@@ -46,6 +46,12 @@ Submit a github pull request of the current or specified branch. Opens your brow
 
 Show an overview of all outgoing branches.
 
+Arguments:
+
+* `-f`       Don't fetch
+* `BRANCH`   Only show branch BRANCH
+* `head`     Only show the current branch
+
 License (MIT)
 -------------
 
