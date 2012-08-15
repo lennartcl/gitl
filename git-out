@@ -1,0 +1,109 @@
+#!/bin/bash -e
+
+QUIET=
+if [ "$1" == "-q" ]; then
+  QUIET=-q
+  shift
+fi
+
+FETCHED=
+FETCHERS=
+NO_FETCH=
+if [ "$1" == "-f" ]; then
+  NO_FETCH=-f
+  shift
+fi
+
+QUIET=
+if [ "$1" == "-q" ]; then
+  QUIET=-q
+  shift
+fi
+
+SELECTION="$@"
+
+if [ "$SELECTION" == "HEAD" ] || [ "$SELECTION" == "head" ]; then
+  SELECTION=`git-get-branch`
+fi
+
+BRANCHES=`git branch --list $SELECTION | sed 's/\* //'`
+
+DID_PRIVATES=
+for BRANCH in $BRANCHES; do
+  if [ $DID_PRIVATES ] && ! echo $BRANCH | grep '^_' >/dev/null; then
+    DID_PRIVATES=
+    echo
+  fi
+  if [ "$BRANCH" == "(no" ] || [ "$BRANCH" == "branch)" ]; then
+    : # ignore
+  elif ! git show origin/$BRANCH &> /dev/null; then
+    LOG=`git log --oneline --first-parent $BRANCH --not --remotes=origin`
+    if echo $BRANCH | grep '^_' >/dev/null; then
+      echo -e "$BRANCH (local)"
+      DID_PRIVATES=1
+    elif [ "$LOG" == "" ]; then
+      echo -e "\033[09;32m$BRANCH\033[00m (empty)"
+      echo
+    else
+      echo -e "\033[01;32m$BRANCH\033[00m (not in upstream)"
+      if [ $QUIET ]; then
+        echo "`echo "$LOG" | wc -l` commit(s)"
+      else
+        echo "$LOG"
+      fi
+      echo
+    fi
+  elif [ "`git log origin/$BRANCH..$BRANCH 2>/dev/null`" != "" ]; then
+    LOG=`git log --oneline --first-parent $BRANCH --not --remotes=origin`
+    echo -e "\033[01;32m$BRANCH\033[00m"
+    if [ $QUIET ]; then
+      echo "`echo "$LOG" | wc -l` commit(s)"
+    else
+      echo "$LOG"
+    fi
+    echo
+  elif [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ] &&
+       [ "`git log origin/beta..$BRANCH 2>/dev/null`" != "" ]; then
+    FETCHERS="$FETCHERS $BRANCH"
+  fi
+done
+
+if [ "$FETCHERS" != "" ]; then
+  if [ ! $NO_FETCH ]; then
+    git list-pull-requests -q >/tmp/.git-out-requests &
+    PULLS=$!
+    echo -n "`echo $FETCHERS | grep -oE '[^ ].*'`: fetching... "
+    SUCCESS=
+    git fetch -q origin
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '                                                            '
+    echo -ne '                                                            '
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    FETCHED=1
+  fi 
+  for BRANCH in $FETCHERS; do
+    if [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ] &&
+       [ "`git log origin/beta..$BRANCH 2>/dev/null`" != "" ]; then
+      if [ ! $NO_FETCH ]; then
+        wait $PULLS
+        PULL_REQUESTS=`cat /tmp/.git-out-requests`
+      fi
+      if [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ] &&
+         [ "`git log origin/beta..$BRANCH 2>/dev/null`" != "" ]; then
+        if [ ! $NO_FETCH ] && echo "$PULL_REQUESTS" | grep "^$BRANCH\$" > /dev/null; then
+          echo -e "$BRANCH (in pull request)"
+          git is-current -f -q $BRANCH
+        else
+          echo -e "\033[01;32m$BRANCH\033[00m (in upstream, not in master or beta)"
+        fi
+        echo
+      fi
+    fi
+  done
+fi
