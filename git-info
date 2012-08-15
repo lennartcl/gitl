@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+while [ ! -d .git ] && [ ! `pwd` = "/" ]; do
+  cd ..
+done
+
+if [ -d .git ]; then
+  git remote -v
+fi
+

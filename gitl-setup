@@ -1,0 +1,28 @@
+#!/bin/bash -e
+echo -n "github username: "
+read NAME
+echo -n "Logging in to github. "
+RESPONSE=`curl -s -u $NAME -d '{"scopes":["user","public_repo","repo","gist"],"note":"https://github.com/lennartcl/gitl","note_url":"https://github.com/lennartcl/gitl"}' https://api.github.com/authorizations`
+
+if echo $RESPONSE | grep -o "Bad credentials" >&2; then
+  exit 1
+fi
+
+TOKEN=`echo $RESPONSE | perl -pe 's/.*token"?\s*:\s*"([^"]*)".*.*/$1/'`
+
+# TODO: print what should be in .profile; check for PATH setting
+#       maybe suggest bash completions, based on which git or locate
+
+echo
+echo Please add the following to the .profile file in your home directory:
+echo
+echo GITHUB_USER=$NAME
+echo GITHUB_TOKEN=$TOKEN
+echo "GITHUB_REPOS=ajaxorg/cloud9,lennartcl/gitl # comma-separated list of repositories you'd like to include in git-list-pull-requests"
+if ! which git-la &>/dev/null; then
+  echo PATH=\$PATH:`cd $(dirname $0); pwd`
+fi
+echo
+echo And optionally, to change your prompt, something like:
+echo
+echo 'PS1='\''\[\033[01;32m\]\u:\[\033[01;34m\]$(pwd | sed "s|$HOME|~|")\[\033[0;36m\]$(git-get-branch -p)\[\033[00m\]\$ '\'

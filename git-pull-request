@@ -1,0 +1,37 @@
+#!/bin/bash -e
+
+NO_FETCH=
+
+if [ "$1" == "-f" ]; then
+  NO_FETCH=-f
+  shift
+fi
+
+if [ "$1" == "" ]; then
+  BRANCH=`git-get-branch`
+else
+  BRANCH="$1"
+fi
+
+REMOTE=`git remote -v | grep push | grep -oE 'github.com:[^/]+/[^\.]+'`
+
+if [ ! $REMOTE ]; then
+  echo Repository not recognized:
+  git remote -v
+  exit 1
+fi
+
+USER=`echo $REMOTE | perl -pe 's|github.com:([^/]+)/.*|$1|'`
+REPO=`echo $REMOTE | perl -pe 's|github.com:[^/]+/(.*)|$1|'`
+URL=https://github.com/$USER/$REPO/pull
+
+if ! git-is-current $NO_FETCH $BRANCH; then
+  echo -n "Branch conflicts with origin, continue? [no] "
+  read consent
+  echo
+  if [ "$consent" != "y" ] && [ "$consent" != "yes" ]; then
+    exit 1
+  fi
+fi
+
+open $URL/new/$BRANCH

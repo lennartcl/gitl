@@ -1,0 +1,16 @@
+#!/bin/bash
+
+RESULT=`git branch --no-color 2>/dev/null | grep '\* ' | grep --color=never -Eo '(\(|\w).*'`
+
+
+if [ "$RESULT" == "(no branch)" ] || [ "$RESULT" == "" ]; then
+  if  [ "$1" != "-p" ]; then
+    echo "Error: not on a branch" >&2
+    exit 1
+  fi
+else
+  if [ "$1" == "-p" ]; then
+    echo -n ' * '
+  fi
+  echo $RESULT
+fi

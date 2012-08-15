@@ -1,0 +1,14 @@
+#!/bin/bash -e
+if [ "$1" == "" ]; then
+  BRANCH=head
+else
+  BRANCH=$1
+  shift
+fi
+LOG=`git log --color --oneline --first-parent origin/master..$BRANCH "$@"`
+if [ `echo "$LOG" | wc -l` -gt 20 ]; then
+  echo "$LOG" | head -n 20
+  echo ...
+else
+  echo "$LOG"
+fi

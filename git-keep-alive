@@ -1,0 +1,42 @@
+#!/bin/bash -e
+
+# http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/
+
+PINGHOST=google.com
+
+######################
+
+echo -ne "\033]0;ssh-keep-alive\007"
+
+function waitshort() {
+  if ! ping -q -n -c 1 $PINGHOST &>/dev/null; then
+    sleep 1
+    if ! ping -q -n -c 1 $PINGHOST &>/dev/null; then
+      sleep 1
+      if ! ping -q -n -c 1 $PINGHOST &>/dev/null; then
+        sleep 1
+        NEEDWAIT=1
+      fi
+    fi
+  fi
+}
+
+MYPID=$$
+
+kill `cat /tmp/.ssh-keep-alive.pid 2>/dev/null 2>/dev/null` 2>/dev/null || :
+kill `cat /tmp/.ssh-keep-alive2.pid 2>/dev/null 2>/dev/null` 2>/dev/null || :
+# kill `cat ~/.xchat-ssh.pid 2>/dev/null` &>/dev/null || : ############# TODO
+echo $MYPID > /tmp/.ssh-keep-alive.pid
+
+while [ 1 ]; do
+  waitshort
+
+  #(tail -f /dev/null | ssh git@github.com git-receive-pack ajaxorg/cloud9 > /dev/null) &
+  #PID=$!
+  #echo $PID > /tmp/.ssh-keep-alive2.pid
+
+  tail -f /dev/null | ssh git@github.com git-receive-pack ajaxorg/cloud9 > /dev/null
+
+  wait $PID
+  echo Restarting
+done
