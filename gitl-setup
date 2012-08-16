@@ -2,7 +2,7 @@
 echo -n "github username: "
 read NAME
 echo -n "Logging in to github. "
-RESPONSE=`curl -s -u $NAME -d '{"scopes":["user","public_repo","repo","gist"],"note":"https://github.com/lennartcl/gitl","note_url":"https://github.com/lennartcl/gitl"}' https://api.github.com/authorizations`
+RESPONSE=`curl -s -u $NAME -d '{"scopes":["user","public_repo","repo","gist"],"note":"gitl","note_url":"https://github.com/lennartcl/gitl"}' https://api.github.com/authorizations`
 
 if echo $RESPONSE | grep -o "Bad credentials" >&2; then
   exit 1
