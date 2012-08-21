@@ -57,6 +57,7 @@ Maintains an open connection to speed up github access. See http://coderrr.wordp
 ### git-info
 
 Show information about the current repository.
+
 License (MIT)
 -------------
 
