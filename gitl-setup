@@ -17,14 +17,17 @@ echo Application registered at https://github.com/settings/applications/.
 echo
 echo Please add the following to the .profile file in your home directory:
 echo
-echo GITHUB_USER=$NAME
-echo GITHUB_TOKEN=$TOKEN
-echo "GITHUB_REPOS= # comma-separated list of repositories you'd like to include in git-list-pull-requests (e.g., lennartcl/gitl,ajaxorg/cloud9)"
-echo "GITHUB_REPO_DIRS= # comma-separated list of coresponding local clones"
+echo   GITHUB_USER=$NAME
+echo   GITHUB_TOKEN=$TOKEN
+echo
+echo "  # For git-list-pull-requests, please add the repositories"
+echo "  # you'd like to include to GITHUB_REPOS, separated by spaces."
+echo "  # Optionally, specify a local file system path using a colon, e.g."
+echo '  # GITHUB_REPOS="lennartcl/gitl ajaxorg/cloud9:~/projects/cloud9'
 if ! which git-l &>/dev/null; then
   echo PATH=\$PATH:`cd $(dirname $0); pwd`
 fi
 echo
-echo And optionally, to change your prompt, something like:
+echo Additionally, to change your prompt, add something like:
 echo
-echo 'PS1='\''\[\033[01;32m\]\u:\[\033[01;34m\]$(pwd | sed "s|$HOME|~|")\[\033[0;36m\]$(git-get-branch -p)\[\033[00m\]\$ '\'
+echo '  PS1='\''\[\033[01;32m\]\u:\[\033[01;34m\]$(pwd | sed "s|$HOME|~|")\[\033[0;36m\]$(git-get-branch -p)\[\033[00m\]\$ '\'
