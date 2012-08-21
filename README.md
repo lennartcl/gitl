@@ -41,13 +41,18 @@ Arguments:
 * `origin/BRANCH`  Compare to branch origin/BRANCH instead of origin/master
 * `BRANCH`         Use selected branch
 
-### git-keep-alive
+### git-push-branch
 
-Maintains an open connection to speed up github access. See http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/.
+Push the current branch. Accepts the same arguments as git push, e.g. supports
+git-push-branch --force, or git-push-branch --force branch2 to push branch2 to origin.
 
 ### git-get-branch
 
 Show the current branch.
+
+### git-keep-alive
+
+Maintains an open connection to speed up github access. See http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/.
 
 ### git-info
 
