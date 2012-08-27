@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+OPTIONS=
+while [ $# != 0 ]; do
+  if echo $1 | grep '^-' > /dev/null; then
+    OPTIONS="$OPTIONS $1"
+    shift
+  else
+    sh -c "git push origin $OPTIONS $*"
+    exit
+  fi
+done
+
+if [ $# == 0 ]; then
+  sh -c "git push $OPTIONS origin `git-get-branch`"
+fi
