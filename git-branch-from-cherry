@@ -1,0 +1,161 @@
+#!/bin/bash -e
+
+STASH=
+CURRENTBRANCH=`git-get-branch`
+MASTER=origin/master
+MAKENEWBRANCH=
+MAKE_NEW=
+NO_FETCH=
+
+if [ "$1" = "-b" ]; then
+  MAKE_NEW=-b
+  shift
+fi
+
+if [ "$1" = "-f" ]; then
+  NO_FETCH=1
+  shift
+fi
+
+if [ "$1" = "-b" ]; then
+  MAKE_NEW=-b
+  shift
+fi
+
+if echo "$1" | grep origin/ >/dev/null; then
+  MASTER=$1
+  shift
+fi
+BRANCH=$1
+shift
+
+if [ "`git branch --list $BRANCH 2>/dev/null`" == "" ]; then
+  if [ ! $MAKE_NEW ]; then
+    echo Branch $BRANCH does not exist and option -b not specified. Aborting. >&2
+    exit 1
+  fi
+elif [ $MAKE_NEW ]; then
+  echo Branch $BRANCH already exists and option -b specified. Aborting. >&2
+  exit 1
+fi
+
+if [ "$BRANCH" == "" ] || [ "$BRANCH" == "--help" ]; then
+  echo "Usage: git-branch-from-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | local]"
+  echo '  -f              disable fetch step'
+  echo '  -b              create a new branch BRANCH, rather than use an existing one'
+  echo '  origin/BRANCH   name for base branch'
+  echo '  BRANCH          name for new branch'
+  echo "  CHERRY          a commit, a branch to pick the head from, or a range of commits [default: $CURRENTBRANCH]"
+  echo "  local           take uncommited changes instead of a range of commits"
+  exit
+fi
+
+if [ ! $NO_FETCH ]; then
+  M=`echo $MASTER | perl -pe 's/^origin\/(.*)/$1/'`
+  echo "$ git fetch origin $M"
+  git fetch -q origin $M
+  echo
+fi
+
+if [ "$1" == local ]; then
+  echo '$ git stash'
+  if ! git stash save; then
+    echo -e "error: no local changes. Aborting.">&2
+    exit 1
+  fi
+  echo
+  if [ "$MAKE_NEW" ]; then
+    echo "$ git checkout $MASTER"
+    git checkout -q $MASTER 
+    echo
+  fi
+  echo "$ git checkout $MAKE_NEW $BRANCH"
+  git checkout -q $MAKE_NEW $BRANCH
+  echo
+  echo "$ git stash pop"
+  git stash pop
+  exit
+elif [ "$1" == "" ]; then
+  if [ "`git status --porcelain | grep -Ev '\?+ '`" != "" ]; then
+    echo "error: Branch has local changes and source 'local' is not specified." >&2
+    git status -s >&2
+    echo Aborting. >&2
+    exit 1
+  fi
+  CHERRY=$CURRENTBRANCH
+  echo '$ git log --oneline --first-parent -1 HEAD'
+  git --no-pager log --oneline --first-parent -1 HEAD
+  echo
+else
+  CHERRY=`git rev-parse "$@"`
+  if [ $# == 1 ]; then
+    echo "$ git log --oneline--first-parent -1 $CHERRY"
+    git --no-pager log --oneline --first-parent -1 `git rev-parse "$@"`
+    echo
+  #else
+  #  echo "(can't show revision log for multiple revisions)"
+  fi
+fi
+
+if ! (git checkout $MASTER && git checkout $CURRENTBRANCH) &>/dev/null; then
+  STASH=1
+  echo '$ git stash'
+  git stash save "changes stashed by git-branch-from-cherry"
+  echo
+fi
+
+if [ $MAKE_NEW ]; then
+  echo "$ git checkout $MASTER"
+  git checkout -q $MASTER
+  echo
+fi
+
+echo "$ git checkout $BRANCH"
+git checkout -q $MAKE_NEW $BRANCH
+echo
+
+echo "$ git cherry-pick $CHERRY"
+git cherry-pick $CHERRY
+echo
+
+echo "$ git checkout $CURRENTBRANCH"
+git checkout -q $CURRENTBRANCH
+echo
+
+if [ $STASH ]; then
+  echo '$ git stash pop'
+  git stash pop
+  echo
+fi
+
+echo "$ git log --oneline --first-parent $BRANCH --not --remotes"
+git --no-pager log --oneline --first-parent $BRANCH --not --remotes
+echo
+
+echo "Successfully cherry-picked to $BRANCH."
+echo
+
+IS_CURRENT=
+
+if git remote -v | grep github.com > /dev/null && git is-current -f $BRANCH && echo; then
+  echo -n "Push and create pull request? [no] "
+  read consent
+  echo
+  if [ "$consent" == "y" ] || [ "$consent" == "yes" ]; then
+    git push origin $BRANCH
+    git-pull-request $BRANCH
+  else
+    echo "To push to origin, type:"
+    echo
+    echo "  git-push-branch $BRANCH"
+    echo "  git-pull-request $BRANCH"
+  fi
+else
+    echo "To push to origin, type:"
+    echo
+    echo "  git-push-branch $BRANCH"
+    if git remote -v | grep github.com > /dev/null; then
+      echo "  git-pull-request $BRANCH"
+    fi
+fi
+

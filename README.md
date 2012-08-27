@@ -50,6 +50,19 @@ git-push-branch --force, or git-push-branch --force branch2 to push branch2 to o
 
 Show the current branch.
 
+### git-branch-from-cherry
+
+Creates a new branch by cherry-picking a range of commits, or by copying current local changes to a new branch.
+
+Usage: git-branch-from-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | local]
+
+  -f              disable fetch step
+  -b              create a new branch BRANCH, rather than use an existing one
+  origin/BRANCH   name for base branch
+  BRANCH          name for new branch
+  CHERRY          a commit, a branch to pick the head from, or a range of commits [default: HEAD]
+  local           take uncommited changes instead of a range of commits
+
 ### git-keep-alive
 
 Maintains an open connection to speed up github access. See http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/.
