@@ -1,4 +1,12 @@
 #!/bin/bash -e
+#
+# gitl-setup
+#
+# https://github.com/lennartcl/gitl
+#
+# License: MIT
+# Copyright (c) 2012 Lennart C. L. Kats
+
 echo -n "github username: "
 read NAME
 echo -n "Logging in to github. "
