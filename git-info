@@ -1,4 +1,9 @@
 #!/bin/bash -e
+#
+# git-info
+#
+# License: MIT
+# Copyright (c) 2012 Lennart C. L. Kats
 
 while [ ! -d .git ] && [ ! `pwd` = "/" ]; do
   cd ..

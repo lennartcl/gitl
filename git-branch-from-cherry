@@ -1,4 +1,9 @@
 #!/bin/bash -e
+#
+# git-branch-from-cherry
+#
+# License: MIT
+# Copyright (c) 2012 Lennart C. L. Kats
 
 STASH=
 CURRENTBRANCH=`git-get-branch`

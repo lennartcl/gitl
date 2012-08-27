@@ -1,4 +1,9 @@
 #!/bin/bash -e
+#
+# git-pull-request
+#
+# License: MIT
+# Copyright (c) 2012 Lennart C. L. Kats
 
 NO_FETCH=
 

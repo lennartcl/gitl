@@ -1,4 +1,9 @@
 #!/bin/bash -e
+#
+# git-push-branch
+#
+# License: MIT
+# Copyright (c) 2012 Lennart C. L. Kats
 
 OPTIONS=
 while [ $# != 0 ]; do

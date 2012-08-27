@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# git-get-branch
+#
+# License: MIT
+# Copyright (c) 2012 Lennart C. L. Kats
 
 RESULT=`git branch --no-color 2>/dev/null | grep '\* ' | grep --color=never -Eo '(\(|\w).*'`
 

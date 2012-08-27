@@ -1,6 +1,9 @@
 #!/bin/bash -e
-
-# http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/
+#
+# git-keep-alive
+#
+# License: MIT
+# Copyright (c) 2012 Lennart C. L. Kats
 
 PINGHOST=google.com
 

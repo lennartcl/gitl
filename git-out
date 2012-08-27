@@ -1,4 +1,9 @@
 #!/bin/bash -e
+#
+# git-out
+#
+# License: MIT
+# Copyright (c) 2012 Lennart C. L. Kats
 
 QUIET=
 if [ "$1" == "-q" ]; then

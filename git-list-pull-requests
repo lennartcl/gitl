@@ -1,4 +1,9 @@
 #!/bin/bash -e
+#
+# git-list-pull-requests
+#
+# License: MIT
+# Copyright (c) 2012 Lennart C. L. Kats
 
 function getPulls() {
   curl --compressed -s https://api.github.com/repos/$1/pulls?access_token=$GITHUB_TOKEN > /tmp/.git-list-i-$2
