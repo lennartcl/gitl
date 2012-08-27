@@ -17,13 +17,13 @@ echo Application registered at https://github.com/settings/applications/.
 echo
 echo Please add the following to the .profile file in your home directory:
 echo
-echo   GITHUB_USER=$NAME
-echo   GITHUB_TOKEN=$TOKEN
-echo
+echo   export GITHUB_USER=$NAME
+echo   export GITHUB_TOKEN=$TOKEN
 echo "  # For git-list-pull-requests, please add the repositories"
 echo "  # you'd like to include to GITHUB_REPOS, separated by spaces."
 echo "  # Optionally, specify a local file system path using a colon, e.g."
-echo '  # GITHUB_REPOS="lennartcl/gitl ajaxorg/cloud9:~/projects/cloud9'
+echo '  # GITHUB_REPOS="lennartcl/gitl:~/projects/gitl ajaxorg/cloud9:~/projects/cloud9'
+echo '  export GITHUB_REPOS='
 if ! which git-l &>/dev/null; then
   echo PATH=\$PATH:`cd $(dirname $0); pwd`
 fi
