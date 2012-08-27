@@ -6,11 +6,11 @@ while [ $# != 0 ]; do
     OPTIONS="$OPTIONS $1"
     shift
   else
-    sh -c "git push origin $OPTIONS $*"
+    sh -c "git pull origin $OPTIONS $*"
     exit
   fi
 done
 
 if [ $# == 0 ]; then
-  sh -c "git push $OPTIONS origin `git-get-branch`"
+  sh -c "git pull $OPTIONS origin `git-get-branch`"
 fi
