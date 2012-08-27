@@ -30,6 +30,10 @@ Arguments:
 * `BRANCH`   Only show branch BRANCH
 * `head`     Only show the current branch
 
+### git-list-pull-requests
+
+List all your open pull requests.
+
 ### git-is-current
 
 Determine if the current or specified branch is up-to-date compared to the current branch.
