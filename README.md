@@ -32,7 +32,14 @@ Arguments:
 
 ### git-list-pull-requests
 
-List all your open pull requests.
+List all your open pull requests and shows if they are up-to-date 
+compared to master (git-is-current).
+
+Arguments:
+
+* `-f`             Don't fetch
+* `-q`             Be quiet
+* `-w`             Open a web page instead
 
 ### git-is-current
 
@@ -41,7 +48,7 @@ Determine if the current or specified branch is up-to-date compared to the curre
 Arguments:
 
 * `-f`             Don't fetch
-* `-q`             Be quited
+* `-q`             Be quiet
 * `origin/BRANCH`  Compare to branch origin/BRANCH instead of origin/master
 * `BRANCH`         Use selected branch
 
@@ -63,14 +70,14 @@ Show the current branch.
 
 Creates a new branch by cherry-picking a range of commits, or by copying current local changes to a new branch.
 
-Usage: git-branch-from-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | local]
+Usage: `git-branch-from-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | local]`
 
-  -f              disable fetch step
-  -b              create a new branch BRANCH, rather than use an existing one
-  origin/BRANCH   name for base branch
-  BRANCH          name for new branch
-  CHERRY          a commit, a branch to pick the head from, or a range of commits [default: HEAD]
-  local           take uncommited changes instead of a range of commits
+* `-f`              disable fetch step
+* `-b`              create a new branch BRANCH, rather than use an existing one
+* `origin/BRANCH`   name for base branch
+* `BRANCH`          name for new branch
+* `CHERRY`          a commit, a branch to pick the head from, or a range of commits [default: HEAD]
+* `local`           take uncommited changes instead of a range of commits
 
 ### git-keep-alive
 
