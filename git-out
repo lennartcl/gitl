@@ -28,6 +28,18 @@ fi
 
 BRANCHES=`git branch --list $SELECTION | sed 's/\* //'`
 
+function clearLine() {
+  for I in {1..100}; do
+    echo -ne '\b\b\b\b'
+  done
+  for I in {1..100}; do
+    echo -ne '    '
+  done
+  for I in {1..100}; do
+    echo -ne '\b\b\b\b'
+  done
+}
+
 DID_PRIVATES=
 for BRANCH in $BRANCHES; do
   if [ $DID_PRIVATES ] && ! echo $BRANCH | grep '^_' >/dev/null; then
@@ -80,16 +92,7 @@ if [ "$FETCHERS" != "" ]; then
     echo -n "`echo $FETCHERS | grep -oE '[^ ].*'`: fetching... "
     SUCCESS=
     git fetch -q origin
-    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
-    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
-    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
-    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
-    echo -ne '                                                            '
-    echo -ne '                                                            '
-    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
-    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
-    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
-    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    clearLine
     FETCHED=1
   fi 
   for BRANCH in $FETCHERS; do
