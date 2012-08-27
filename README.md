@@ -6,8 +6,9 @@ gitl
 Configuration
 -------------
 
-Please run `gitl-setup` to create a github API key and get a list of
-settings to add to the `.profile` file in your home directory.
+Put these scripts on your PATH. Optionally, run `gitl-setup` to create a
+github API key and get a list of settings to add to the `.profile`
+file in your home directory.
 
 Commands
 --------
