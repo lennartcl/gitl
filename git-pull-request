@@ -32,11 +32,20 @@ REPO=`echo $REMOTE | perl -pe 's|github.com:[^/]+/(.*)|$1|'`
 URL=https://github.com/$USER/$REPO/pull
 
 if ! git-is-current $NO_FETCH $BRANCH; then
-  echo -n "Branch conflicts with origin, continue? [no] "
-  read consent
+  echo -n "Branch conflicts with origin/master, continue? [no] "
+  read CONSENT
   echo
-  if [ "$consent" != "y" ] && [ "$consent" != "yes" ]; then
+  if [ "$CONSENT" != "y" ] && [ "$CONSENT" != "yes" ]; then
     exit 1
+  fi
+fi
+
+if ! LOG=`git log origin/$BRANCH..$BRANCH 2>/dev/null` || [ "$LOG" != "" ]; then
+  echo -n "origin/$BRANCH is not up-to-date, push latest changes? [no] "
+  read CONSENT
+  echo
+  if [ "$CONSENT" == "y" ] || [ "$CONSENT" == "yes" ]; then
+    git-push-branch $BRANCH
   fi
 fi
 
