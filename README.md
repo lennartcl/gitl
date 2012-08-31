@@ -59,10 +59,6 @@ Push the current branch or a given branch. Accepts the same arguments as git pus
 e.g. supports git-push-branch --force, or git-push-branch --force branch2 to push
 branch2 to origin.
 
-### git-pull-branch
-
-Pull the current branch or a given branch.
-
 ### git-get-branch
 
 Show the current branch.
