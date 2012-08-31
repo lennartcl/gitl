@@ -10,7 +10,7 @@ function getPulls() {
   node -e '
     var pulls = JSON.parse(require("fs").readFileSync("/dev/stdin", "UTF-8"));
     pulls.map(function(p) {
-      if (p.user.login === "'$GITHUB_USER'")
+      if ("'$ALL'" === "-a" || p.user.login === "'$GITHUB_USER'")
         console.log(p.head.ref);
     });
   ' > /tmp/.git-list-r-$2
@@ -74,6 +74,13 @@ fi
 
 QUIET=
 if [ "$1" == "-q" ]; then
+  QUIET=-q
+  shift
+fi
+
+ALL=
+if [ "$1" == "-a" ]; then
+  ALL=-a
   QUIET=-q
   shift
 fi

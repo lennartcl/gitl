@@ -88,7 +88,7 @@ done
 if [ "$FETCHERS" != "" ]; then
   if [ ! $NO_FETCH ]; then
     if which git-list-pull-requests &>/dev/null; then
-      git list-pull-requests -q >/tmp/.git-out-requests &
+      git list-pull-requests -a >/tmp/.git-out-requests &
       PULLS=$!
     else
       echo >/tmp/.git-out-requests &
