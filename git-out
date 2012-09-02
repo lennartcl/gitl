@@ -34,15 +34,16 @@ fi
 BRANCHES=`git branch --list $SELECTION | sed 's/\* //'`
 
 function clearLine() {
-  for I in {1..100}; do
-    echo -ne '\b\b\b\b'
-  done
-  for I in {1..100}; do
-    echo -ne '    '
-  done
-  for I in {1..100}; do
-    echo -ne '\b\b\b\b'
-  done
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '                                                            '
+    echo -ne '                                                            '
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+    echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
 }
 
 DID_PRIVATES=

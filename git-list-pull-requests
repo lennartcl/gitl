@@ -106,8 +106,8 @@ for REPO in $GITHUB_REPOS; do
   echo -n === $NAME...
   wait ${WAITS_PULLS[$INDEX]} ${WAITS_FETCH[$INDEX]}
   PULLS=`cat /tmp/.git-list-r-$INDEX`
-  if [ "$PULLS" == "" ]; then 
-    clearLine
+  if [ "$PULLS" == "" ]; then
+    clearLine || :
   else
     echo -e '\b\b\b   '
   fi
