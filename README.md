@@ -8,7 +8,7 @@ Configuration
 
 Put these scripts on your PATH. Optionally, run `gitl-setup` to create a
 github API key and get a list of settings to add to the `.profile`
-file in your home directory.
+file in your home directory (only required for `git-list-pull-requests`).
 
 Commands
 --------
@@ -34,7 +34,7 @@ Arguments:
 ### git-list-pull-requests
 
 List all your open pull requests and shows if they are up-to-date 
-compared to master (git-is-current).
+compared to master (using `git-is-current)`.
 
 Arguments:
 
