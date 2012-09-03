@@ -106,11 +106,11 @@ for REPO in $GITHUB_REPOS; do
   echo -n === $NAME...
   wait ${WAITS_PULLS[$INDEX]} ${WAITS_FETCH[$INDEX]}
   PULLS=`cat /tmp/.git-list-r-$INDEX`
-  if [ "$PULLS" == "" ]; then
-    clearLine || :
-  else
+  #if [ "$PULLS" == "" ]; then
+  #  clearLine || :
+  #else
     echo -e '\b\b\b   '
-  fi
+  #fi
   cd $DIR
   for PULL in $PULLS; do
     git-is-current -f $PULL || :
