@@ -14,9 +14,10 @@ if [ "$RESULT" == "(no branch)" ] || [ "$RESULT" == "" ]; then
   fi
 else
   if [ "$1" == "-p" ]; then
-    echo -n ' * '
+    echo -n ' * '$RESULT
+  else
+    echo $RESULT
   fi
-  echo $RESULT
 fi
 
 if [ "$1" == "-p" ] && git describe --tag --exact-match &>/dev/null; then
