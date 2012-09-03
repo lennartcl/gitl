@@ -7,7 +7,6 @@
 
 RESULT=`git branch --no-color 2>/dev/null | grep '\* ' | grep --color=never -Eo '(\(|\w).*'`
 
-
 if [ "$RESULT" == "(no branch)" ] || [ "$RESULT" == "" ]; then
   if  [ "$1" != "-p" ]; then
     echo "Error: not on a branch" >&2
@@ -18,4 +17,8 @@ else
     echo -n ' * '
   fi
   echo $RESULT
+fi
+
+if [ "$1" == "-p" ] && git describe --tag &>/dev/null; then
+  echo -n ' @ '`git describe --tag`
 fi
