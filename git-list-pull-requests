@@ -6,9 +6,9 @@
 # Copyright (c) 2012 Lennart C. L. Kats
 
 function getPulls() {
-  curl --compressed -s https://api.github.com/repos/$1/pulls?access_token=$GITHUB_TOKEN |
+  curl --compressed -s https://api.github.com/repos/$1/pulls?access_token=$GITHUB_TOKEN > /tmp/.git-list-i-$2
   node -e '
-    var pulls = JSON.parse(require("fs").readFileSync("/dev/stdin", "UTF-8"));
+    var pulls = JSON.parse(require("fs").readFileSync("'/tmp/.git-list-i-$2'", "UTF-8"));
     pulls.map(function(p) {
       if ("'$ALL'" === "-a" || p.user.login === "'$GITHUB_USER'")
         console.log(p.head.ref);
