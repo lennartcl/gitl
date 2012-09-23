@@ -152,7 +152,7 @@ HELP="To push to origin, type:\n\n   git-push-branch $BRANCH"
 if ! git remote -v | grep github.com > /dev/null; then
   echo -e $HELP
 else
-  echo "$ git is-current $NO_FETCH $MASTER $BRANCH"
+  echo "$ git is-current $MASTER $BRANCH"
   IS_CURRENT=
   if git-is-current $NO_FETCH $MASTER $BRANCH; then
     echo
