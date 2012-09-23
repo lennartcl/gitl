@@ -136,8 +136,8 @@ if [ $STASH ]; then
   echo
 fi
 
-echo "$ git log --oneline --first-parent $BRANCH --not --remotes"
-git --no-pager log --oneline --first-parent $BRANCH --not --remotes
+echo "$ git l $BRANCH"
+git-l $BRANCH
 echo
 
 echo "Successfully cherry-picked to $BRANCH."
