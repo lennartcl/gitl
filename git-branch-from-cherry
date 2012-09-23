@@ -147,25 +147,27 @@ if [ $MAKE_NEW ]; then # already fetched
   NO_FETCH=-f
 fi
 
-if git remote -v | grep github.com > /dev/null && git is-current $NO_FETCH $MASTER $BRANCH && echo; then
-  echo -n "Push and create pull request? [no] "
-  read consent
-  echo
-  if [ "$consent" == "y" ] || [ "$consent" == "yes" ]; then
-    git push origin $BRANCH
-    git-pull-request $BRANCH
-  else
-    echo "To push to origin, type:"
+HELP="To push to origin, type:\n\n   git-push-branch $BRANCH"
+
+if ! git remote -v | grep github.com > /dev/null; then
+  echo -e $HELP
+else
+  echo "$ git is-current $NO_FETCH $MASTER $BRANCH"
+  IS_CURRENT=
+  if git-is-current $NO_FETCH $MASTER $BRANCH; then
     echo
-    echo "  git-push-branch $BRANCH"
+    echo -n "Push and create pull request? [no] "
+    read CONSENT
+    echo
+    if [ "$CONSENT" == "y" ] || [ "$CONSENT" == "yes" ]; then
+      git push origin $BRANCH
+      git-pull-request $BRANCH
+      exit
+    fi
+  else
+    echo
+    echo -e $HELP
     echo "  git-pull-request $BRANCH"
   fi
-else
-    echo "To push to origin, type:"
-    echo
-    echo "  git-push-branch $BRANCH"
-    if git remote -v | grep github.com > /dev/null; then
-      echo "  git-pull-request $BRANCH"
-    fi
 fi
 
