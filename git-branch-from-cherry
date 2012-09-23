@@ -55,6 +55,15 @@ if [ "$BRANCH" == "" ] || [ "$BRANCH" == "--help" ]; then
   exit
 fi
 
+if [ "$1" == local ]; then
+  echo '$ git stash'
+  if ! git stash save; then
+    echo -e "error: no local changes. Aborting.">&2
+    exit 1
+  fi
+  echo
+fi
+
 if [ ! $NO_FETCH ]; then
   M=`echo $MASTER | perl -pe 's/^origin\/(.*)/$1/'`
   echo "$ git fetch origin $M"
@@ -63,12 +72,6 @@ if [ ! $NO_FETCH ]; then
 fi
 
 if [ "$1" == local ]; then
-  echo '$ git stash'
-  if ! git stash save; then
-    echo -e "error: no local changes. Aborting.">&2
-    exit 1
-  fi
-  echo
   if [ "$MAKE_NEW" ]; then
     echo "$ git checkout $MASTER"
     git checkout -q $MASTER 
