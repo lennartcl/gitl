@@ -81,7 +81,7 @@ if [ "$1" == local ]; then
   git checkout -q $MAKE_NEW $BRANCH
   echo
   echo "$ git stash pop"
-  git stash pop
+  git stash pop -q
   exit
 elif [ "$1" == "" ]; then
   if [ "`git status --porcelain | grep -Ev '\?+ '`" != "" ]; then
@@ -132,7 +132,7 @@ echo
 
 if [ $STASH ]; then
   echo '$ git stash pop'
-  git stash pop
+  git stash pop -q
   echo
 fi
 
