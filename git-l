@@ -6,12 +6,18 @@
 # Copyright (c) 2012 Lennart C. L. Kats
 
 if [ "$1" == "" ]; then
-  BRANCH=head
+  BRANCH=HEAD
 else
   BRANCH=$1
   shift
 fi
-LOG=`git log --color --oneline --first-parent origin/master..$BRANCH "$@"`
+
+LOG=`git log --color --oneline --first-parent origin/master..$BRANCH "$@" | head -n 21`
+
+if [ "$LOG" == "" ] && echo $BRANCH | grep -iE '^(master|HEAD|origin/master)$' >/dev/null; then
+  LOG=`git log --color --oneline --first-parent $BRANCH "$@" | head -n 21`
+fi
+
 if [ `echo "$LOG" | wc -l` -gt 20 ]; then
   echo "$LOG" | head -n 20
   echo ...
