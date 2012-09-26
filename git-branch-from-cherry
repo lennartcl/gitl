@@ -11,26 +11,31 @@ MASTER=origin/master
 MAKENEWBRANCH=
 MAKE_NEW=
 NO_FETCH=
+MOVE_BRANCH=
+PULL_REQUEST=
 
-if [ "$1" = "-b" ]; then
-  MAKE_NEW=-b
-  shift
-fi
-
-if [ "$1" = "-f" ]; then
-  NO_FETCH=1
-  shift
-fi
-
-if [ "$1" = "-b" ]; then
-  MAKE_NEW=-b
-  shift
-fi
+while echo "$1" | grep -E "-"; do
+  case "$1" in
+    -b)
+      MAKE_NEW=-b
+      shift; continue;;
+    -f)
+      NO_FETCH=-f
+      shift; continue;;
+    -m)
+      MOVE_BRANCH=-m
+      shift; continue;;
+    -p)
+      PULL_REQUEST=-p
+      shift; continue;;
+  esac
+done
 
 if echo "$1" | grep origin/ >/dev/null; then
   MASTER=$1
   shift
 fi
+
 BRANCH=$1
 shift
 
@@ -48,6 +53,7 @@ if [ "$BRANCH" == "" ] || [ "$BRANCH" == "--help" ]; then
   echo "Usage: git-branch-from-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | local]"
   echo '  -f              disable fetch step'
   echo '  -b              create a new branch BRANCH, rather than use an existing one'
+  echo '  -p              make a pull request for the created branch'
   echo '  origin/BRANCH   name for base branch'
   echo '  BRANCH          name for new branch'
   echo "  CHERRY          a commit, a branch to pick the head from, or a range of commits [default: $CURRENTBRANCH]"
@@ -147,27 +153,14 @@ if [ $MAKE_NEW ]; then # already fetched
   NO_FETCH=-f
 fi
 
-HELP="To push to origin, type:\n\n   git-push-branch $BRANCH"
-
-if ! git remote -v | grep github.com > /dev/null; then
-  echo -e $HELP
-else
+if [ "$PULL_REQUEST" ]; then
   echo "$ git is-current $MASTER $BRANCH"
-  IS_CURRENT=
   if git-is-current $NO_FETCH $MASTER $BRANCH; then
-    echo
-    echo -n "Push and create pull request? [no] "
-    read CONSENT
-    echo
-    if [ "$CONSENT" == "y" ] || [ "$CONSENT" == "yes" ]; then
-      git push origin $BRANCH
-      git-pull-request $BRANCH
-      exit
-    fi
+    git push origin $BRANCH
+    git-pull-request $BRANCH
   else
     echo
-    echo -e $HELP
-    echo "  git-pull-request $BRANCH"
+    echo -e "To create a pull request, use:\n\n  git-pull-request $BRANCH"
   fi
 fi
 
