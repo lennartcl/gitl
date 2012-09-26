@@ -12,10 +12,10 @@ else
   shift
 fi
 
-LOG=`git log --color --oneline --first-parent origin/master..$BRANCH "$@" | head -n 21`
+LOG=`git log --oneline --first-parent origin/master..$BRANCH "$@" | head -n 21`
 
 if [ "$LOG" == "" ] && echo $BRANCH | grep -iE '^(master|HEAD|origin/master)$' >/dev/null; then
-  LOG=`git log --color --oneline --first-parent $BRANCH "$@" | head -n 21`
+  LOG=`git log --oneline --first-parent $BRANCH "$@" | head -n 21`
 fi
 
 if [ `echo "$LOG" | wc -l` -gt 20 ]; then
