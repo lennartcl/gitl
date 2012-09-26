@@ -18,7 +18,7 @@ else
   LOG=`git log --oneline --first-parent origin/master..$BRANCH "$@" | head -n 21`
 fi
 
-if [ "$LOG" == "" ] && echo $BRANCH | grep -iE '^(master|HEAD|origin/master)$' >/dev/null; then
+if [ "$LOG" == "" ] && echo $BRANCH | grep -iE '^(master|origin/master)$' >/dev/null; then
   LOG=`git log --oneline --first-parent $BRANCH "$@" | head -n 21`
 fi
 
