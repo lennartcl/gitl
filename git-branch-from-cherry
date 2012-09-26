@@ -112,9 +112,11 @@ else
 fi
 
 if ! (git checkout $MASTER && git checkout $CURRENTBRANCH) &>/dev/null; then
-  STASH=1
   echo '$ git stash'
-  git stash save "changes stashed by git-branch-from-cherry"
+  RESULT=`git stash save "changes stashed by git-branch-from-cherry"`
+  if ! echo "$RESULT" | grep -iE 'No local changes' >/dev/null; then
+    STASH=1
+  fi
   echo
 fi
 
