@@ -14,21 +14,20 @@ NO_FETCH=
 MOVE_BRANCH=
 PULL_REQUEST=
 
-while echo "$1" | grep -E "-"; do
+while echo "$1" | grep -E "-" >/dev/null; do
   case "$1" in
     -b)
-      MAKE_NEW=-b
-      shift; continue;;
+      MAKE_NEW=-b ;;
     -f)
-      NO_FETCH=-f
-      shift; continue;;
+      NO_FETCH=-f ;;
     -m)
-      MOVE_BRANCH=-m
-      shift; continue;;
+      MOVE_BRANCH=-m ;;
     -p)
-      PULL_REQUEST=-p
-      shift; continue;;
+      PULL_REQUEST=-p ;;
+    *)
+      break ;;
   esac
+  shift
 done
 
 if echo "$1" | grep origin/ >/dev/null; then
@@ -54,6 +53,7 @@ if [ "$BRANCH" == "" ] || [ "$BRANCH" == "--help" ]; then
   echo '  -f              disable fetch step'
   echo '  -b              create a new branch BRANCH, rather than use an existing one'
   echo '  -p              make a pull request for the created branch'
+# echo '  -m              move instead of copy to the created branch' # experimental
   echo '  origin/BRANCH   name for base branch'
   echo '  BRANCH          name for new branch'
   echo "  CHERRY          a commit, a branch to pick the head from, or a range of commits [default: $CURRENTBRANCH]"
@@ -68,6 +68,20 @@ if [ "$1" == local ]; then
     exit 1
   fi
   echo
+fi
+
+# -m is very conservative and only supports a few cases
+if [ "$MOVE_BRANCH" ]; then
+  if echo "$*" | grep -i '^HEAD (HEAD\^|HEAD~1) (HEAD\^\^$|HEAD~2)$' >/dev/null; then
+    MOVE_BRANCH="git reset --hard HEAD^^^"
+  elif echo "$*" | grep -i '^HEAD (HEAD^$|HEAD~1)$' >/dev/null; then
+    MOVE_BRANCH="git reset --hard HEAD^^"
+  elif echo "$*" | grep -i '^HEAD$' >/dev/null; then
+    MOVE_BRANCH="git reset --hard HEAD^"
+  else
+    echo "error: cannot use -b with this pattern. Aborting." >&2
+    exit 1
+  fi
 fi
 
 if [ ! $NO_FETCH ] && [ $MAKE_NEW ]; then
@@ -151,11 +165,15 @@ echo
 echo "Successfully cherry-picked to $BRANCH."
 echo
 
-if [ $MAKE_NEW ]; then # already fetched
-  NO_FETCH=-f
+if [ "$MOVE_BRANCH" ]; then
+  echo "$ $MOVE_BRANCH"
+  $MOVE_BRANCH
 fi
 
 if [ "$PULL_REQUEST" ]; then
+  if [ $MAKE_NEW ]; then # already fetched
+    NO_FETCH=-f
+  fi
   echo "$ git is-current $MASTER $BRANCH"
   if git-is-current $NO_FETCH $MASTER $BRANCH; then
     git push origin $BRANCH
@@ -165,4 +183,3 @@ if [ "$PULL_REQUEST" ]; then
     echo -e "To create a pull request, use:\n\n  git-pull-request $BRANCH"
   fi
 fi
-
