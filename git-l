@@ -12,7 +12,11 @@ else
   shift
 fi
 
-LOG=`git log --oneline --first-parent origin/master..$BRANCH "$@" | head -n 21`
+if ! git remote | grep -iE '^origin$' >/dev/null; then
+  LOG=`git log --oneline --first-parent $BRANCH "$@" | head -n 21` 
+else
+  LOG=`git log --oneline --first-parent origin/master..$BRANCH "$@" | head -n 21`
+fi
 
 if [ "$LOG" == "" ] && echo $BRANCH | grep -iE '^(master|HEAD|origin/master)$' >/dev/null; then
   LOG=`git log --oneline --first-parent $BRANCH "$@" | head -n 21`
