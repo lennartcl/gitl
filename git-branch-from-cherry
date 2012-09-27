@@ -102,6 +102,9 @@ if [ "$1" == local ]; then
   echo
   echo "$ git stash pop"
   git stash pop -q
+  echo
+  echo "$ git status -s"
+  git status -s
   exit
 elif [ "$1" == "" ]; then
   if [ "`git status --porcelain | grep -Ev '\?+ '`" != "" ]; then
