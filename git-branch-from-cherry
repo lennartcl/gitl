@@ -57,11 +57,11 @@ if [ "$BRANCH" == "" ] || [ "$BRANCH" == "--help" ]; then
   echo '  origin/BRANCH   name for base branch'
   echo '  BRANCH          name for new branch'
   echo "  CHERRY          a commit, a branch to pick the head from, or a range of commits [default: $CURRENTBRANCH]"
-  echo "  local           take uncommited changes instead of a range of commits"
+  echo "  LOCAL           take uncommited changes instead of a range of commits"
   exit
 fi
 
-if [ "$1" == local ]; then
+if [ "$1" == local ] || [ "$1" == LOCAL ]; then
   echo '$ git stash'
   if ! git stash save; then
     echo -e "error: no local changes. Aborting.">&2
