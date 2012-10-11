@@ -69,7 +69,7 @@ branch2 to origin.
 
 Show the current branch.
 
-### git-branch-from-cherry
+### git-branch-from-cherry, git-bc
 
 Creates a new branch by cherry-picking a range of commits, or by copying current local changes to a new branch.
 
