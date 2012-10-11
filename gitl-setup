@@ -7,6 +7,13 @@
 # License: MIT
 # Copyright (c) 2012 Lennart C. L. Kats
 
+PROMPT='  PS1='\''\[\033[01;32m\]\u:\[\033[01;34m\]$(pwd | sed "s|$HOME|~|")\[\033[0;36m\]$(git-get-branch -p)\[\033[00m\]\$ '\'
+
+if [ "$1" == "-p" ]; then
+  echo $PROMPT
+  exit
+fi
+
 echo -n "github username: "
 read NAME
 echo -n "Logging in to github. "
@@ -38,4 +45,4 @@ fi
 echo
 echo Additionally, to change your prompt, add something like:
 echo
-echo '  PS1='\''\[\033[01;32m\]\u:\[\033[01;34m\]$(pwd | sed "s|$HOME|~|")\[\033[0;36m\]$(git-get-branch -p)\[\033[00m\]\$ '\'
+echo $PROMPT

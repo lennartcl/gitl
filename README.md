@@ -6,8 +6,14 @@ gitl
 Configuration
 -------------
 
-Put these scripts on your PATH. Optionally, run `gitl-setup` to create a
-github API key and get a list of settings to add to the `.profile`
+Just put these scripts on your PATH.
+
+If you want, you can use these scripts to customize your prompt.
+Just run `gitl-setup -p` to get a prompt that shows the current
+git branch and/or tag. 
+
+To use `git-list-pull-requests`, the `gitl-setup` command can create a
+github API key and show a list of settings to add to the `.profile`
 file in your home directory (only required for `git-list-pull-requests`).
 
 Commands
