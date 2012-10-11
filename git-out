@@ -27,7 +27,7 @@ fi
 
 SELECTION="$@"
 
-if [ "$SELECTION" == "HEAD" ] || [ "$SELECTION" == "head" ]; then
+if echo "$SELECTION" | grep -iE 'head|local' >/dev/null; then
   SELECTION=`git-get-branch`
 fi
 
