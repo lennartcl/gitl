@@ -33,9 +33,8 @@ fi
 
 BRANCHES=`git branch --list $SELECTION | sed 's/\* //'`
 
-if BRANCH=`git-get-branch`; then
-  BRANCHES="$BRANCH `echo "$BRANCHES" | grep -Ev "^$BRANCH\$"`"
-fi
+BRANCH=`git-get-branch 2>/dev/null` &&
+  BRANCHES="`git-get-branch` `echo "$BRANCHES" | grep -Ev "^$BRANCH\$"`" || :
 
 function clearLine() {
     echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
