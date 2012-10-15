@@ -8,7 +8,9 @@
 RESULT=`git branch --no-color 2>/dev/null | grep '\* ' | grep --color=never -Eo '(\(|\w).*'`
 
 if [ "$RESULT" == "(no branch)" ] || [ "$RESULT" == "" ]; then
-  if  [ "$1" != "-p" ]; then
+  if  [ "$1" == "-p" ]; then
+    echo " * `git rev-parse HEAD | grep -oE '^.{7}'`"
+  else
     echo "Error: not on a branch" >&2
     exit 1
   fi
