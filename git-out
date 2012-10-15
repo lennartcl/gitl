@@ -54,7 +54,7 @@ if [ ! $NO_FETCH ]; then
   FETCHER=$!
 fi
 
-DID_PRIVATES=
+PRINTED_FIRST=
 for BRANCH in $BRANCHES; do
   if echo $BRANCH | grep '^_' >/dev/null || [ "$BRANCH" == "(no" ] ||
      [ "$BRANCH" == "branch)" ]; then
@@ -62,9 +62,9 @@ for BRANCH in $BRANCHES; do
   fi
   if ! git show --oneline origin/$BRANCH &> /dev/null; then
     LOG=`git log --oneline --first-parent $BRANCH --not --remotes=origin`
+    [ $PRINTED_FIRST ] && echo || PRINTED_FIRST=1
     if [ "$LOG" == "" ]; then
       echo -e "\033[09;32m$BRANCH\033[00m (empty)"
-      echo
     else
       echo -e "\033[01;32m$BRANCH\033[00m (not in upstream)"
       if [ $QUIET ]; then
@@ -72,9 +72,9 @@ for BRANCH in $BRANCHES; do
       else
         echo "$LOG"
       fi
-      echo
     fi
   elif [ "`git log origin/$BRANCH..$BRANCH 2>/dev/null`" != "" ]; then
+    [ $PRINTED_FIRST ] && echo || PRINTED_FIRST=1
     LOG=`git log --oneline --first-parent $BRANCH --not --remotes=origin`
     echo -e "\033[01;32m$BRANCH\033[00m"
     if [ $QUIET ]; then
@@ -82,7 +82,6 @@ for BRANCH in $BRANCHES; do
     else
       echo "$LOG"
     fi
-    echo
   elif [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ]; then
     FETCHERS="$FETCHERS $BRANCH"
   fi
@@ -90,6 +89,7 @@ done
 
 if [ "$FETCHERS" != "" ]; then
   if [ ! $NO_FETCH ]; then
+    [ $PRINTED_FIRST ] && echo || PRINTED_FIRST=1
     if which git-list-pull-requests &>/dev/null; then
       git list-pull-requests -a >/tmp/.git-out-requests &
       PULLS=$!
@@ -103,6 +103,7 @@ if [ "$FETCHERS" != "" ]; then
     clearLine
     FETCHED=1
   fi 
+  PRINTED_FIRST=
   for BRANCH in $FETCHERS; do
     if [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ]; then
       if [ ! $NO_FETCH ]; then
@@ -110,13 +111,13 @@ if [ "$FETCHERS" != "" ]; then
         PULL_REQUESTS=`cat /tmp/.git-out-requests`
       fi
       if [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ]; then
+        [ $PRINTED_FIRST ] && echo || PRINTED_FIRST=1
         if [ ! $NO_FETCH ] && echo "$PULL_REQUESTS" | grep "^$BRANCH\$" > /dev/null; then
           echo -e "$BRANCH (in pull request)"
           git is-current -f -q $BRANCH
         else
           echo -e "\033[01;32m$BRANCH\033[00m (in upstream, not in master or beta)"
         fi
-        echo
       fi
     fi
   done
