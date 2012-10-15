@@ -61,7 +61,7 @@ for BRANCH in $BRANCHES; do
      [ "$BRANCH" == "branch)" ]; then
     continue
   fi
-  if ! git show origin/$BRANCH &> /dev/null; then
+  if ! git show --oneline origin/$BRANCH &> /dev/null; then
     LOG=`git log --oneline --first-parent $BRANCH --not --remotes=origin`
     if [ "$LOG" == "" ]; then
       echo -e "\033[09;32m$BRANCH\033[00m (empty)"
