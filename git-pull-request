@@ -31,6 +31,12 @@ USER=`echo $REMOTE | perl -pe 's|github.com:([^/]+)/.*|$1|'`
 REPO=`echo $REMOTE | perl -pe 's|github.com:[^/]+/(.*)|$1|'`
 URL=https://github.com/$USER/$REPO/pull
 
+if [ ! $NO_FETCH ]; then
+  CURL_OUT=/tmp/git-pr-`date +'%N'`
+  curl --head -s -o $CURL_OUT $URL/$BRANCH  &
+  CURL=$!
+fi
+
 PUSH_CHANGES=
 if ! LOG=`git log origin/$BRANCH..$BRANCH 2>/dev/null` || [ "$LOG" != "" ]; then
   echo -n "origin/$BRANCH is not up-to-date, push latest changes? [no] "
@@ -49,4 +55,9 @@ if [ "$PUSH_CHANGES" == "y" ] || [ "$PUSH_CHANGES" == "yes" ]; then
   git-push-branch $BRANCH
 fi
 
-open $URL/new/$BRANCH
+
+if [ ! $NO_FETCH ] && wait $CURL && grep '1 302' $CURL_OUT &>/dev/null; then
+  open $URL/$BRANCH
+else
+  open $URL/new/$BRANCH
+fi
