@@ -48,18 +48,13 @@ function clearLine() {
 
 DID_PRIVATES=
 for BRANCH in $BRANCHES; do
-  if [ $DID_PRIVATES ] && ! echo $BRANCH | grep '^_' >/dev/null; then
-    DID_PRIVATES=
-    echo
+  if echo $BRANCH | grep '^_' >/dev/null || [ "$BRANCH" == "(no" ] ||
+     [ "$BRANCH" == "branch)" ]; then
+    continue
   fi
-  if [ "$BRANCH" == "(no" ] || [ "$BRANCH" == "branch)" ]; then
-    : # ignore
-  elif ! git show origin/$BRANCH &> /dev/null; then
+  if ! git show origin/$BRANCH &> /dev/null; then
     LOG=`git log --oneline --first-parent $BRANCH --not --remotes=origin`
-    if echo $BRANCH | grep '^_' >/dev/null; then
-      echo -e "$BRANCH (local)"
-      DID_PRIVATES=1
-    elif [ "$LOG" == "" ]; then
+    if [ "$LOG" == "" ]; then
       echo -e "\033[09;32m$BRANCH\033[00m (empty)"
       echo
     else
