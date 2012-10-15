@@ -84,8 +84,7 @@ for BRANCH in $BRANCHES; do
       echo "$LOG"
     fi
     echo
-  elif [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ] &&
-       [ "`git log origin/beta..$BRANCH 2>/dev/null`" != "" ]; then
+  elif [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ]; then
     FETCHERS="$FETCHERS $BRANCH"
   fi
 done
@@ -106,14 +105,12 @@ if [ "$FETCHERS" != "" ]; then
     FETCHED=1
   fi 
   for BRANCH in $FETCHERS; do
-    if [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ] &&
-       [ "`git log origin/beta..$BRANCH 2>/dev/null`" != "" ]; then
+    if [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ]; then
       if [ ! $NO_FETCH ]; then
         wait $PULLS
         PULL_REQUESTS=`cat /tmp/.git-out-requests`
       fi
-      if [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ] &&
-         [ "`git log origin/beta..$BRANCH 2>/dev/null`" != "" ]; then
+      if [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ]; then
         if [ ! $NO_FETCH ] && echo "$PULL_REQUESTS" | grep "^$BRANCH\$" > /dev/null; then
           echo -e "$BRANCH (in pull request)"
           git is-current -f -q $BRANCH
