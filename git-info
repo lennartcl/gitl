@@ -5,11 +5,42 @@
 # License: MIT
 # Copyright (c) 2012 Lennart C. L. Kats
 
-while [ ! -d .git ] && [ ! `pwd` = "/" ]; do
-  cd ..
-done
 
-if [ -d .git ]; then
+if [ "$1" == "" ]; then
   git remote -v
+  exit
+elif ! git remote &>/dev/null && [ -d "$1" ]; then
+  cd "$1"
+  git remote -v
+  exit
 fi
 
+FILE="$1"
+if ! git remote &>/dev/null; then
+  cd `dirname "$FILE"`
+  FILE="`basename "$FILE"`"
+fi
+
+REMOTE=`git remote -v | grep 'origin.*push' | grep -oE 'github.com[:/][^/]+/[^\.]+'` ||
+(echo 'No remote for current directory' >&2 && exit 1)
+
+if [ ! $REMOTE ]; then
+  echo Repository not recognized:
+  git remote -v
+  exit 1
+fi
+
+USER=`echo $REMOTE | perl -pe 's|github.com.([^/]+)/.*|$1|'`
+REPO=`echo $REMOTE | perl -pe 's|github.com.[^/]+/(.*)|$1|'`
+BRANCH=`git-get-branch 2>/dev/null || git rev-parse HEAD`
+
+FILE=`cd -P -- "$(dirname -- "$FILE")" && echo "$(pwd -P)/$(basename -- "$FILE")"`
+while [ ! -d .git ] && [ "`pwd`" != "/" ]; do
+  cd ..
+done
+BASEPATH=`ls -d $(pwd)`
+RELPATH=`echo "$FILE" | sed "s|$BASEPATH/||"`
+
+git status $FILE
+echo "# URL:"
+echo "https://github.com/$USER/$REPO/blob/$BRANCH/$RELPATH"
