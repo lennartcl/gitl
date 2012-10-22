@@ -47,7 +47,7 @@ if [ ! $NO_FETCH ]; then
   CURL=$!
 fi
 
-if [ ! $OLD ] && ! git-is-current $NO_FETCH $BRANCH; then
+if [ ! $OLD ] && ! git-is-current -q $NO_FETCH $BRANCH; then
   echo -n "Branch conflicts with origin/master, continue? [no] "
   read CONSENT
   if [ "$CONSENT" != "y" ] && [ "$CONSENT" != "yes" ]; then
