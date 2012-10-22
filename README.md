@@ -27,6 +27,12 @@ Quick log of the current branch, compared to origin/master.
 
 Submit a GitHub pull request of the current or specified branch. Checks if it is still up-to-date using `git-is-current`, then opens your browser.
 
+Arguments:
+
+* `-f`       Don't fetch
+* `-o`       Open the page for an existing pull request
+* `BRANCH`   Request branch BRANCH
+
 ### git-out
 
 Show an overview of all outgoing branches. Branches starting with `_` are not fully shown. 

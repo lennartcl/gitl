@@ -5,7 +5,14 @@
 # License: MIT
 # Copyright (c) 2012 Lennart C. L. Kats
 
+OLD=
 NO_FETCH=
+
+if [ "$1" == "-o" ]; then
+  OLD=-o
+  NO_FETCH=-f
+  shift
+fi
 
 if [ "$1" == "-f" ]; then
   NO_FETCH=-f
@@ -21,7 +28,7 @@ fi
 # URL encode is required when not using /new/
 ENC_BRANCH=`echo -n $BRANCH | sed 's/\//%2F/g'`
 
-REMOTE=`git remote -v | grep 'origin.*push' | grep -oE 'github.com:[^/]+/[^\.]+'` ||
+REMOTE=`git remote -v | grep 'origin.*push' | grep -oE 'github.com[:/][^/]+/[^\.]+'` ||
 (echo 'No remote for current directory' >&2 && exit 1)
 
 if [ ! "$REMOTE" ]; then
@@ -30,8 +37,8 @@ if [ ! "$REMOTE" ]; then
   exit 1
 fi
 
-USER=`echo $REMOTE | perl -pe 's|github.com:([^/]+)/.*|$1|'`
-REPO=`echo $REMOTE | perl -pe 's|github.com:[^/]+/(.*)|$1|'`
+USER=`echo $REMOTE | perl -pe 's|github.com.([^/]+)/.*|$1|'`
+REPO=`echo $REMOTE | perl -pe 's|github.com.[^/]+/(.*)|$1|'`
 URL=https://github.com/$USER/$REPO/pull
 
 if [ ! $NO_FETCH ]; then
@@ -40,7 +47,7 @@ if [ ! $NO_FETCH ]; then
   CURL=$!
 fi
 
-if ! git-is-current $NO_FETCH $BRANCH; then
+if [ ! $OLD ] && ! git-is-current $NO_FETCH $BRANCH; then
   echo -n "Branch conflicts with origin/master, continue? [no] "
   read CONSENT
   if [ "$CONSENT" != "y" ] && [ "$CONSENT" != "yes" ]; then
@@ -58,9 +65,9 @@ if ! LOG=`git log origin/$BRANCH..$BRANCH 2>/dev/null` || [ "$LOG" != "" ]; then
   fi
 fi
 
-
 #if [ ! $NO_FETCH ] && wait $CURL && grep '1 302' $CURL_OUT &>/dev/null; then
-#  open $URL/$ENC_BRANCH
-#else
+if [ $OLD ]; then
+  open $URL/$ENC_BRANCH
+else
   open $URL/new/$BRANCH
-#fi
+fi
