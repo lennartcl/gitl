@@ -79,7 +79,7 @@ if [ "$MOVE_BRANCH" ]; then
   elif echo "$*" | grep -i '^HEAD$' >/dev/null || [ "`git rev-parse $*`" == "`git rev-parse HEAD`" ]; then
     MOVE_BRANCH="git reset --hard HEAD^"
   else
-    echo "error: cannot use -b with this cherry-pick pattern. Aborting." >&2
+    echo "error: cannot use -m with this cherry-pick pattern. Aborting." >&2
     exit 1
   fi
 fi
