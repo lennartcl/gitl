@@ -35,7 +35,7 @@ REPO=`echo $REMOTE | perl -pe 's|github.com.[^/]+/(.*)|$1|'`
 BRANCH=`git-get-branch 2>/dev/null || git rev-parse HEAD`
 
 FILE=`cd -P -- "$(dirname -- "$FILE")" && echo "$(pwd -P)/$(basename -- "$FILE")"`
-while [ ! -d .git ] && [ "`pwd`" != "/" ]; do
+while [ ! -e .git ] && [ "`pwd`" != "/" ]; do
   cd ..
 done
 BASEPATH=`ls -d $(pwd)`
