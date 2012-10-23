@@ -47,21 +47,15 @@ if [ ! $NO_FETCH ]; then
   CURL=$!
 fi
 
+if [ ! $OLD ] && ! LOG=`git log origin/$BRANCH..$BRANCH 2>/dev/null` || [ "$LOG" != "" ]; then
+  git-push-branch $BRANCH
+fi
+
 if [ ! $OLD ] && ! git-is-current -q $NO_FETCH $BRANCH; then
   echo -n "Branch conflicts with origin/master, continue? [no] "
   read CONSENT
   if [ "$CONSENT" != "y" ] && [ "$CONSENT" != "yes" ]; then
     exit 1
-  fi
-fi
-
-PUSH_CHANGES=
-if ! LOG=`git log origin/$BRANCH..$BRANCH 2>/dev/null` || [ "$LOG" != "" ]; then
-  echo -n "origin/$BRANCH is not up-to-date, push latest changes? [yes] "
-  read PUSH_CHANGES
-
-  if [ "$PUSH_CHANGES" != "n" ] && [ "$PUSH_CHANGES" != "no" ]; then
-    git-push-branch $BRANCH
   fi
 fi
 
