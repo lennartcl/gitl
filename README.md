@@ -95,7 +95,12 @@ Maintains an open connection to speed up github access. See http://coderrr.wordp
 
 ### git-info
 
-Show information about the current repository.
+Show information about the current repository or a path within the repository.
+
+Usage: `git-info [-w] [PATH]`
+
+* `-w`             Open a web page
+* `PATH`           A path to show info for
 
 License (MIT)
 -------------

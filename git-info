@@ -5,6 +5,11 @@
 # License: MIT
 # Copyright (c) 2012 Lennart C. L. Kats
 
+WEB=
+if [ "$1" == "-w" ]; then
+  WEB=-w
+  shift
+fi
 
 if [ "$1" == "" ]; then
   git remote -v
@@ -43,4 +48,9 @@ RELPATH=`echo "$FILE" | sed "s|$BASEPATH/||"`
 
 git status $FILE
 echo "# URL:"
-echo "https://github.com/$USER/$REPO/blob/$BRANCH/$RELPATH"
+URL="https://github.com/$USER/$REPO/blob/$BRANCH/$RELPATH"
+echo $URL
+
+if [ $WEB ]; then
+  open $URL
+fi
