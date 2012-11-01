@@ -49,7 +49,7 @@ elif [ $MAKE_NEW ]; then
 fi
 
 if [ "$BRANCH" == "" ] || [ "$BRANCH" == "--help" ]; then
-  echo "Usage: git-branch-from-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | local]"
+  echo "Usage: git-branch-from-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]"
   echo '  -f              disable fetch step'
   echo '  -b              create a new branch BRANCH, rather than use an existing one'
   echo '  -p              make a pull request for the created branch'
@@ -91,7 +91,7 @@ if [ ! $NO_FETCH ] && [ $MAKE_NEW ]; then
   echo
 fi
 
-if [ "$1" == local ]; then
+if [ "$1" == local ] || [ "$1" == LOCAL ]; then
   if [ $MAKE_NEW ]; then
     echo "$ git checkout $MASTER"
     git checkout -q $MASTER 
@@ -108,7 +108,7 @@ if [ "$1" == local ]; then
   exit
 elif [ "$1" == "" ]; then
   if [ "`git status --porcelain | grep -Ev '\?+ '`" != "" ]; then
-    echo "error: Branch has local changes and source 'local' is not specified." >&2
+    echo "error: Branch has local changes and source 'LOCAL' is not specified." >&2
     git status -s >&2
     echo Aborting. >&2
     exit 1
