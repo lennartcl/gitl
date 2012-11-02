@@ -67,7 +67,7 @@ fi
 BASE=`git merge-base $MASTER $BRANCH`
 DIFF=`git merge-tree $BASE $MASTER $BRANCH`
 if echo "$DIFF" | grep -E '^.<<<<<' &>/dev/null; then
-  echo -e "$BRANCH is \033[01;32mNOT\033[00m does not conflict with $MASTER"
+  echo -e "$BRANCH \033[01;32mCONFLICTS\033[00m with $MASTER"
   exit 1
 elif echo "$DIFF" | grep -Ev '^added in' &>/dev/null; then
   if [ ! $QUIET ]; then
