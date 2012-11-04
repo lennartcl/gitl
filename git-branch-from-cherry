@@ -165,24 +165,18 @@ echo "$ git l $BRANCH"
 git-l $BRANCH
 echo
 
-echo "Successfully cherry-picked to $BRANCH."
-echo
-
 if [ "$MOVE_BRANCH" ]; then
   echo "$ $MOVE_BRANCH"
   $MOVE_BRANCH
 fi
 
+echo "Successfully cherry-picked to $BRANCH."
+echo
+
 if [ "$PULL_REQUEST" ]; then
   if [ $MAKE_NEW ]; then # already fetched
     NO_FETCH=-f
   fi
-  echo "$ git is-current $MASTER $BRANCH"
-  if git-is-current $NO_FETCH $MASTER $BRANCH; then
-    git push origin $BRANCH
-    git-pull-request $BRANCH
-  else
-    echo
-    echo -e "To create a pull request, use:\n\n  git-pull-request $BRANCH"
-  fi
+  echo "$ git-pull-request $BRANCH"
+  git-pull-request $BRANCH
 fi
