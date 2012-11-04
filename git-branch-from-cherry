@@ -155,6 +155,11 @@ echo "$ git checkout $CURRENTBRANCH"
 git checkout -q $CURRENTBRANCH
 echo
 
+if [ "$MOVE_BRANCH" ]; then
+  echo "$ $MOVE_BRANCH"
+  $MOVE_BRANCH
+fi
+
 if [ $STASH ]; then
   echo '$ git stash pop'
   git stash pop -q
@@ -164,11 +169,6 @@ fi
 echo "$ git l $BRANCH"
 git-l $BRANCH
 echo
-
-if [ "$MOVE_BRANCH" ]; then
-  echo "$ $MOVE_BRANCH"
-  $MOVE_BRANCH
-fi
 
 echo "Successfully cherry-picked to $BRANCH."
 echo
