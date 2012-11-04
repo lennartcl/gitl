@@ -12,15 +12,15 @@ if [ "$1" == "-w" ]; then
 fi
 
 if [ "$1" == "" ]; then
-  git remote -v
-  exit
-elif ! git remote &>/dev/null && [ -d "$1" ]; then
+  FILE=
+elif [ -d "$1" ]; then
   cd "$1"
-  git remote -v
-  exit
+  FILE=
+else
+  echo nop
+  FILE="$1"
 fi
 
-FILE="$1"
 if ! git remote &>/dev/null; then
   cd `dirname "$FILE"`
   FILE="`basename "$FILE"`"
@@ -46,7 +46,12 @@ done
 BASEPATH=`ls -d $(pwd)`
 RELPATH=`echo "$FILE" | sed "s|$BASEPATH/||"`
 
-git status $FILE
+if [ -d "$FILE" ]; then
+  FILE=
+else
+  git status "$FILE"
+fi
+
 echo "# URL:"
 URL="https://github.com/$USER/$REPO/blob/$BRANCH/$RELPATH"
 echo $URL
