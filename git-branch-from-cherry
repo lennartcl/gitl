@@ -115,13 +115,13 @@ elif [ "$1" == "" ]; then
   fi
   CHERRY=$CURRENTBRANCH
   echo '$ git log --oneline --first-parent -1 HEAD'
-  git --no-pager log --oneline --first-parent -1 HEAD
+  git --no-pager log --oneline --color=never --first-parent -1 HEAD
   echo
 else
   CHERRY=`git rev-parse "$@"`
   if [ $# == 1 ]; then
     echo "$ git log --oneline--first-parent -1 $CHERRY"
-    git --no-pager log --oneline --first-parent -1 `git rev-parse "$@"`
+    git --no-pager log --oneline --color=never --first-parent -1 `git rev-parse "$@"`
     echo
   #else
   #  echo "(can't show revision log for multiple revisions)"
