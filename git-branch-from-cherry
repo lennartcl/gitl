@@ -72,12 +72,15 @@ fi
 
 # -m is very conservative and only supports a few cases
 if [ "$MOVE_BRANCH" ]; then
-  if echo "$*" | grep -i '^HEAD (HEAD\^|HEAD~1) (HEAD\^\^$|HEAD~2)$' >/dev/null; then
+  if echo "$*" | grep -Ei '^HEAD (HEAD\^|HEAD~1) (HEAD\^\^|HEAD~2)$' >/dev/null; then
     MOVE_BRANCH="git reset --hard HEAD^^^"
-  elif echo "$*" | grep -i '^HEAD (HEAD^$|HEAD~1)$' >/dev/null; then
+  elif echo "$*" | grep -Ei '^HEAD (HEAD\^|HEAD~1)$' >/dev/null; then
     MOVE_BRANCH="git reset --hard HEAD^^"
-  elif echo "$*" | grep -i '^HEAD$' >/dev/null || [ "`git rev-parse $*`" == "`git rev-parse HEAD`" ]; then
+  elif echo "$*" | grep -Ei '^HEAD$' >/dev/null || [ "`git rev-parse $*`" == "`git rev-parse HEAD`" ] ||
+       [ "$*" == "" ]; then
     MOVE_BRANCH="git reset --hard HEAD^"
+  elif [ "$*" == "local" ] || [ "$*" == LOCAL ]; then
+    MOVE_BRANCH=
   else
     echo "error: cannot use -m with this cherry-pick pattern. Aborting." >&2
     exit 1
