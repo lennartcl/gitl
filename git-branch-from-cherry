@@ -63,7 +63,8 @@ fi
 
 if [ "$1" == local ] || [ "$1" == LOCAL ]; then
   echo '$ git stash'
-  if ! git stash save; then
+  RESULT=`git stash save "changes stashed by git-branch-from-cherry"`
+  if echo "$RESULT" | grep -iE 'No local changes' >/dev/null; then
     echo -e "error: no local changes. Aborting.">&2
     exit 1
   fi
