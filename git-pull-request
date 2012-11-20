@@ -47,7 +47,7 @@ if [ ! $NO_FETCH ]; then
   CURL=$!
 fi
 
-if [ ! $OLD ] && ! LOG=`git log origin/$BRANCH..$BRANCH 2>/dev/null` || [ "$LOG" != "" ]; then
+if [ ! $OLD ] && ! [ $NO_FETCH ] && ! LOG=`git log origin/$BRANCH..$BRANCH 2>/dev/null` || [ "$LOG" != "" ]; then
   git-push-branch $BRANCH
 fi
 
