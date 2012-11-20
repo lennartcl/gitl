@@ -73,9 +73,9 @@ fi
 
 # -m is very conservative and only supports a few cases
 if [ "$MOVE_BRANCH" ]; then
-  if echo "$*" | grep -Ei '^HEAD (HEAD\^|HEAD~1) (HEAD\^\^|HEAD~2)$' >/dev/null; then
+  if echo "$*" | grep -Ei '^ (HEAD\^\^|HEAD~2) (HEAD\^|HEAD~1) HEAD$' >/dev/null; then
     MOVE_BRANCH="git reset --hard HEAD^^^"
-  elif echo "$*" | grep -Ei '^HEAD (HEAD\^|HEAD~1)$' >/dev/null; then
+  elif echo "$*" | grep -Ei '^(HEAD\^|HEAD~1) HEAD$' >/dev/null; then
     MOVE_BRANCH="git reset --hard HEAD^^"
   elif echo "$*" | grep -Ei '^HEAD$' >/dev/null || [ "`git rev-parse $*`" == "`git rev-parse HEAD`" ] ||
        [ "$*" == "" ]; then
