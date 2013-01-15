@@ -11,6 +11,20 @@ if [ "$1" == "-w" ]; then
   shift
 fi
 
+REV=
+if git rev-parse $1 &>/dev/null; then
+  REV=$1
+  shift
+elif [ "$1" == "-r" ]; then
+  REV=$2
+  shift; shift
+fi
+
+if [ "$1" == "-w" ]; then
+  WEB=-w
+  shift
+fi
+
 if [ "$1" == "" ]; then
   FILE=
 elif [ -d "$1" ]; then
@@ -52,8 +66,16 @@ else
   git status "$FILE"
 fi
 
+if [ $REV ] && [ ! $FILE ]; then
+  URL="https://github.com/$USER/$REPO/commit/$REV"
+elif [ $REV ]; then
+  URL="https://github.com/$USER/$REPO/blob/$REV/$RELPATH"
+else
+  URL="https://github.com/$USER/$REPO/blob/$BRANCH/$RELPATH"
+fi
+
+
 echo "# URL:"
-URL="https://github.com/$USER/$REPO/blob/$BRANCH/$RELPATH"
 echo $URL
 
 if [ $WEB ]; then
