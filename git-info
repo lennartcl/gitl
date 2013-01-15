@@ -12,7 +12,7 @@ if [ "$1" == "-w" ]; then
 fi
 
 REV=
-if git rev-parse $1 &>/dev/null; then
+if [ "$1" != "" ] && git rev-parse $1 &>/dev/null; then
   REV=$1
   shift
 elif [ "$1" == "-r" ]; then
@@ -73,7 +73,6 @@ elif [ $REV ]; then
 else
   URL="https://github.com/$USER/$REPO/blob/$BRANCH/$RELPATH"
 fi
-
 
 echo "# URL:"
 echo $URL
