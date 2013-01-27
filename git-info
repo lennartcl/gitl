@@ -43,7 +43,7 @@ fi
 REMOTE=`git remote -v | grep 'origin.*push' | grep -oE 'github.com[:/][^/]+/[^\.]+'` ||
 (echo 'No remote for current directory' >&2 && exit 1)
 
-if [ ! $REMOTE ]; then
+if [ ! "$REMOTE" ]; then
   echo Repository not recognized:
   git remote -v
   exit 1
