@@ -40,7 +40,7 @@ if ! git remote &>/dev/null; then
   FILE="`basename "$FILE"`"
 fi
 
-REMOTE=`git remote -v | grep 'origin.*push' | grep -oE 'github.com[:/][^/]+/[^\.]+'` ||
+REMOTE=`git remote -v | grep 'origin.*push' | grep -oE 'github.com[:/][^/]+/[^\. ]+'` ||
 (echo 'No remote for current directory' >&2 && exit 1)
 
 if [ ! "$REMOTE" ]; then
