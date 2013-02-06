@@ -28,7 +28,7 @@ fi
 # URL encode is required when not using /new/
 ENC_BRANCH=`echo -n $BRANCH | sed 's/\//%2F/g'`
 
-REMOTE=`git remote -v | grep 'origin.*push' | grep -oE 'github.com[:/][^/]+/[^\. ]+'` ||
+REMOTE=`git remote -v | grep 'origin.*push' | grep -oE 'github.com[:/][^/]+/[^ ]+' | sed -E 's/(.*)\.git/\1/'` ||
 (echo 'No remote for current directory' >&2 && exit 1)
 
 if [ ! "$REMOTE" ]; then
