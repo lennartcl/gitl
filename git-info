@@ -12,7 +12,7 @@ if [ "$1" == "-w" ]; then
 fi
 
 REV=
-if [ "$1" != "" ] && git rev-parse $1 &>/dev/null; then
+if [ "$1" != "" ] && git rev-parse "$1" &>/dev/null && [ ! -e "$1" ]; then
   REV=$1
   shift
 elif [ "$1" == "-r" ]; then
