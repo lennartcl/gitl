@@ -68,14 +68,22 @@ fi
 
 if [ $REV ] && [ ! $FILE ]; then
   URL="https://github.com/$USER/$REPO/commit/$REV"
+  DIFFURL=
 elif [ $REV ]; then
   URL="https://github.com/$USER/$REPO/blob/$REV/$RELPATH"
+  DIFFURL="https://github.com/$URER/$REPO/compare/master...$REV"
 else
   URL="https://github.com/$USER/$REPO/blob/$BRANCH/$RELPATH"
+  DIFFURL="https://github.com/$USER/$REPO/compare/master...`echo $BRANCH | sed 's!/!%2F!g'`"
 fi
 
 echo "# URL:"
 echo $URL
+
+if [ $DIFFURL ]; then
+  echo "# Diff URL:"
+  echo $DIFFURL
+fi
 
 if [ $WEB ]; then
   open $URL
