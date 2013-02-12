@@ -80,7 +80,7 @@ fi
 echo "# URL:"
 echo $URL
 
-if [ $DIFFURL ]; then
+if [ $DIFFURL ] && [ "$BRANCH" != "master" ]; then
   echo "# Diff URL:"
   echo $DIFFURL
 fi
