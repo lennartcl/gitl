@@ -97,7 +97,7 @@ if [ "$FETCHERS" != "" ]; then
       echo >/tmp/.git-out-requests &
       PULLS=$!
     fi
-    echo -n "`echo $FETCHERS | grep -oE '[^ ].*'`: fetching... "
+    echo -n "Fetching info for `echo "$FETCHERS" | wc -w | grep -oE '[0-9]+'` remote branch(es)... "
     SUCCESS=
     wait $FETCHER
     clearLine
