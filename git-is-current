@@ -65,7 +65,7 @@ fi
 
 # Non-destructive version based on http://stackoverflow.com/a/6283843: doesn't detect "both added file" conflicts
 BASE=`git merge-base $MASTER $BRANCH`
-DIFF=`git merge-tree $BASE $MASTER $BRANCH`
+DIFF=`git merge-tree $BASE $MASTER $BRANCH || echo "added in -- git merge-tree failed"`
 if echo "$DIFF" | grep -E '^.<<<<<' &>/dev/null; then
   echo -e "$BRANCH \033[01;32mCONFLICTS\033[00m with $MASTER"
   exit 1
