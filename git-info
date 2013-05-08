@@ -13,10 +13,10 @@ fi
 
 REV=
 if [ "$1" != "" ] && git rev-parse "$1" &>/dev/null && [ ! -e "$1" ]; then
-  REV=$1
+  REV=`git rev-parse $1`
   shift
 elif [ "$1" == "-r" ]; then
-  REV=$2
+  REV=`git rev-parse $2`
   shift; shift
 fi
 
