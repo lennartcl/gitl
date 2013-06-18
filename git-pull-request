@@ -39,7 +39,7 @@ fi
 
 USER=`echo $REMOTE | perl -pe 's|github.com.([^/]+)/.*|$1|'`
 REPO=`echo $REMOTE | perl -pe 's|github.com.[^/]+/(.*)|$1|'`
-URL=https://github.com/$USER/$REPO/pull
+URL=https://github.com/$USER/$REPO
 
 if [ ! $NO_FETCH ]; then
   CURL_OUT=/tmp/git-pr-`date +'%H%M%S'`
@@ -61,7 +61,7 @@ fi
 
 #if [ ! $NO_FETCH ] && wait $CURL && grep '1 302' $CURL_OUT &>/dev/null; then
 if [ $OLD ]; then
-  open $URL/$ENC_BRANCH
+  open $URL/pull/$ENC_BRANCH
 else
-  open $URL/new/$BRANCH
+  open $URL/compare/$BRANCH?expand=1
 fi
