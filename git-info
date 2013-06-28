@@ -57,7 +57,7 @@ FILE=`cd -P -- "$(dirname -- "$FILE")" && echo "$(pwd -P)/$(basename -- "$FILE")
 while [ ! -e .git ] && [ "`pwd`" != "/" ]; do
   cd ..
 done
-BASEPATH=`ls -d $(pwd)`
+BASEPATH=`ls -d $(pwd -P)`
 RELPATH=`echo "$FILE" | sed "s|$BASEPATH/||"`
 
 if [ -d "$FILE" ]; then
