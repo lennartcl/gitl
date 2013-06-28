@@ -31,7 +31,6 @@ elif [ -d "$1" ]; then
   cd "$1"
   FILE=
 else
-  echo nop
   FILE="$1"
 fi
 
