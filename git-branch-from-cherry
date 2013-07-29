@@ -162,6 +162,7 @@ echo
 if [ "$MOVE_BRANCH" ]; then
   echo "$ $MOVE_BRANCH"
   $MOVE_BRANCH
+  echo
 fi
 
 if [ $STASH ]; then
