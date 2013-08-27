@@ -53,7 +53,7 @@ if [ "$BRANCH" == "" ] || [ "$BRANCH" == "--help" ]; then
   echo '  -f              disable fetch step'
   echo '  -b              create a new branch BRANCH, rather than use an existing one'
   echo '  -p              make a pull request for the created branch'
-# echo '  -m              move instead of copy to the created branch' # experimental
+  echo '  -m`             move the commit(s), instead of copying it'
   echo '  origin/BRANCH   name for base branch'
   echo '  BRANCH          name for new branch'
   echo "  CHERRY          a commit, a branch to pick the head from, or a range of commits [default: $CURRENTBRANCH]"

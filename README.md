@@ -84,6 +84,7 @@ Usage: `git-branch-from-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> 
 * `-f`              disable fetch step
 * `-b`              create a new branch BRANCH, rather than use an existing one
 * `-p`              make a pull request for the new branch
+* `-m`              move the commit(s), instead of copying it
 * `origin/BRANCH`   name for base branch
 * `BRANCH`          name for new branch
 * `CHERRY`          a commit, a branch to pick the head from, or a range of commits [default: HEAD]
