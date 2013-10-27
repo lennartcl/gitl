@@ -27,9 +27,13 @@ Get an overview of all outgoing branches:
 
     $ git out
     master
-    2a6261b Clarify
+    2a6261b Something directly committed to master :)
 
-    new-feature (not in upstream)
+    new-feature (in pull request)
+    aa01bb0 Commit something
+    bafeea0 Commit stuff
+
+    nother-new-feature (not in upstream)
     a8ffaa0 Add mysterious new feature
 
 Move the last commit into a separate feature branch and 
@@ -109,12 +113,6 @@ Arguments:
 * `-q`             Be quiet
 * `origin/BRANCH`  Compare to branch origin/BRANCH instead of origin/master
 * `BRANCH`         Use selected branch
-
-### git-push-branch
-
-Push the current branch or a given branch. Accepts the same arguments as git push,
-e.g. supports git-push-branch --force, or git-push-branch --force branch2 to push
-branch2 to origin.
 
 ### git-get-branch
 
