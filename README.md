@@ -1,8 +1,10 @@
 gitl
 ====
 
-`gitl` is a collection of command-line git/github scripts.
-
+`gitl` is a collection of command-line git & github scripts.
+Most of these scripts operate fully in the command-line, but some
+of them can interact with github.com to open a pull request, or
+display some information about an item in the repository.
 
 Examples
 --------
@@ -54,7 +56,9 @@ git branch and/or tag.
 
 To use `git-list-pull-requests`, the `gitl-setup` command can create a
 github API key and show a list of settings to add to the `.profile`
-file in your home directory (only required for `git-list-pull-requests`).
+file in your home directory (only required for `git-list-pull-requests`;
+before you get into that I suggest you play around with the other
+commands!).
 
 Command Reference
 -----------------
