@@ -3,6 +3,40 @@ gitl
 
 `gitl` is a collection of command-line git/github scripts.
 
+
+Examples
+--------
+
+Get a quick list of recent unpushed commits in the current branch:
+
+    $ git l
+    dac6cc8 Fix git-bc <BRANCH> LOCAL
+    8b0e105 Document git-bc -m option
+    4681a29 Fix missing newline
+    4e47ab8 Make git out independent of GITHUB_REPOS setting
+    8b46445 cleanup
+
+Create a pull request for the current branch:
+
+    $ git pull-request
+    # (opens your browser)
+
+Get an overview of all outgoing branches:
+
+    $ git out
+    master
+    2a6261b Clarify
+
+    new-feature (not in upstream)
+    a8ffaa0 Add mysterious new feature
+
+Move the last commit into a separate feature branch and 
+file a pull request for it:
+
+    $ git move-cherry -b my-new-feature HEAD
+    $ git pull-request my-new-feature
+    # (opens your browser)
+
 Configuration
 -------------
 
