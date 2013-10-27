@@ -37,6 +37,12 @@ file a pull request for it:
     $ git pull-request my-new-feature
     # (opens your browser)
 
+Open a page about the current repository, file, or revision in your browser:
+
+    $ git info -w
+    $ git info -w README.md
+    $ git info -w HEAD
+
 Configuration
 -------------
 
@@ -90,7 +96,8 @@ Arguments:
 
 ### git-is-current
 
-Determine if the current or specified branch is up-to-date compared to the current branch.
+Determine if the current or specified branch is up-to-date compared to the current branch,
+or if merging the two branches would cause a conflict.
 
 Arguments:
 
@@ -146,9 +153,9 @@ Maintains an open connection to speed up github access. See http://coderrr.wordp
 
 Show information about the current repository or a path within the repository.
 
-Usage: `git-info [-w] [PATH]`
+Usage: `git-info [-w] [PATH | REVISION]`
 
-* `-w`             Open a web page
+* `-w`             Open a web page in your browser
 * `PATH`           A path to show info for
 
 License (MIT)
