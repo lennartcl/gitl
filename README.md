@@ -16,8 +16,8 @@ To use `git-list-pull-requests`, the `gitl-setup` command can create a
 github API key and show a list of settings to add to the `.profile`
 file in your home directory (only required for `git-list-pull-requests`).
 
-Commands
---------
+Command Reference
+-----------------
 
 ### git-l
 
@@ -75,16 +75,30 @@ branch2 to origin.
 
 Show the current branch.
 
-### git-branch-from-cherry, git-bc
+### git-add-cherry
 
-Creates a new branch by cherry-picking a range of commits, or by copying current local changes to a new branch.
+Extends or creates a branch with a cherry picking range of commits or local changes.
 
-Usage: `git-branch-from-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
+Usage: `git-add-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
 
 * `-f`              disable fetch step
 * `-b`              create a new branch BRANCH, rather than use an existing one
 * `-p`              make a pull request for the new branch
-* `-m`              move the commit(s), instead of copying it
+* `origin/BRANCH`   name for base branch
+* `BRANCH`          name for new branch
+* `CHERRY`          a commit, a branch to pick the head from, or a range of commits [default: HEAD]
+* `LOCAL`           take uncommited changes instead of a range of commits
+
+### git-move-cherry
+
+Extends or creates a branch with a cherry picking range of commits or local changes,
+moving them away from the current branch.
+
+Usage: `git-move-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
+
+* `-f`              disable fetch step
+* `-b`              create a new branch BRANCH, rather than use an existing one
+* `-p`              make a pull request for the new branch
 * `origin/BRANCH`   name for base branch
 * `BRANCH`          name for new branch
 * `CHERRY`          a commit, a branch to pick the head from, or a range of commits [default: HEAD]
