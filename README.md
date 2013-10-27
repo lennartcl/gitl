@@ -39,7 +39,7 @@ Get an overview of all outgoing branches:
 Move the last commit into a separate feature branch and 
 file a pull request for it:
 
-    $ git move-cherry -b my-new-feature HEAD
+    $ git cherry-move -b my-new-feature HEAD
     $ git pull-request my-new-feature
     # (opens your browser)
 
@@ -118,11 +118,11 @@ Arguments:
 
 Show the current branch.
 
-### git-add-cherry
+### git-cherry-add
 
 Extends or creates a branch with a cherry picking range of commits or local changes.
 
-Usage: `git-add-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
+Usage: `git-cherry-add [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
 
 * `-f`              disable fetch step
 * `-b`              create a new branch BRANCH, rather than use an existing one
@@ -132,12 +132,12 @@ Usage: `git-add-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]
 * `CHERRY`          a commit, a branch to pick the head from, or a range of commits [default: HEAD]
 * `LOCAL`           take uncommited changes instead of a range of commits
 
-### git-move-cherry
+### git-cherry-move
 
 Extends or creates a branch with a cherry picking range of commits or local changes,
 moving them away from the current branch.
 
-Usage: `git-move-cherry [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
+Usage: `git-cherry-move [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
 
 * `-f`              disable fetch step
 * `-b`              create a new branch BRANCH, rather than use an existing one
