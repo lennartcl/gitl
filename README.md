@@ -118,11 +118,11 @@ Arguments:
 
 Show the current branch.
 
-### git-cherry-add
+### git-cherry-copy
 
 Extends or creates a branch with a cherry picking range of commits or local changes.
 
-Usage: `git-cherry-add [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
+Usage: `git-cherry-copy [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
 
 * `-f`              disable fetch step
 * `-b`              create a new branch BRANCH, rather than use an existing one
