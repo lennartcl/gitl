@@ -13,6 +13,7 @@ MAKE_NEW=
 NO_FETCH=
 MOVE_BRANCH=
 PULL_REQUEST=
+ORIGINAL_COMMAND="`basename $0` $*"
 
 while echo "$1" | grep -E "-" >/dev/null; do
   case "$1" in
@@ -47,9 +48,21 @@ elif [ $MAKE_NEW ]; then
   echo Branch $BRANCH already exists and option -b specified. Aborting. >&2
   exit 1
 fi
+if [ "$1" == "" ]; then
+  echo "Error: no commits to cherry-pick specified" >&2
+  if [ "`git status --porcelain | grep -Ev '\?+ '`" != "" ]; then
+    echo "Tip: did you mean to move your uncommited changes? Try: $ORIGINAL_COMMAND LOCAL" >&2
+  fi
+  echo Aborting. >&2
+  exit 1
+fi
+
+
+echo "'"$1"'"
+exit 1
 
 if [ "$BRANCH" == "" ] || [ "$BRANCH" == "--help" ]; then
-  echo "Usage: `basename $0` [OPTIONS...] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]"
+  echo "Usage: `basename $0` [OPTIONS...] [<origin/BRANCH>] <BRANCH> <CHERRY.. | LOCAL>"
   echo '  -b              create a new branch BRANCH, rather than use an existing one'
   echo '  -f              disable fetch step'
   echo '  -p              make a pull request for the created branch'
@@ -110,17 +123,6 @@ if [ "$1" == local ] || [ "$1" == LOCAL ]; then
   echo "$ git status -s"
   git status -s
   exit
-elif [ "$1" == "" ]; then
-  if [ "`git status --porcelain | grep -Ev '\?+ '`" != "" ]; then
-    echo "error: Branch has local changes and source 'LOCAL' is not specified." >&2
-    git status -s >&2
-    echo Aborting. >&2
-    exit 1
-  fi
-  CHERRY=$CURRENTBRANCH
-  echo '$ git log --oneline --first-parent -1 HEAD'
-  git --no-pager log --oneline --color=never --first-parent -1 HEAD
-  echo
 else
   CHERRY=`git rev-parse "$@"`
   if [ $# == 1 ]; then
@@ -170,10 +172,6 @@ if [ $STASH ]; then
   git stash pop -q
   echo
 fi
-
-echo "$ git l $BRANCH"
-git-l $BRANCH
-echo
 
 echo "Successfully cherry-picked to $BRANCH."
 echo

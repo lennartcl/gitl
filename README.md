@@ -122,7 +122,7 @@ Show the current branch.
 
 Extends or creates a branch with a cherry picking range of commits or local changes.
 
-Usage: `git-cherry-copy [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
+Usage: `git-cherry-copy [-f] [-b] [<origin/BRANCH>] <BRANCH> <CHERRY.. | LOCAL>`
 
 * `-f`              disable fetch step
 * `-b`              create a new branch BRANCH, rather than use an existing one
@@ -137,7 +137,7 @@ Usage: `git-cherry-copy [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL
 Extends or creates a branch with a cherry picking range of commits or local changes,
 moving them away from the current branch.
 
-Usage: `git-cherry-move [-f] [-b] [<origin/BRANCH>] <BRANCH> [<CHERRY..> | LOCAL]`
+Usage: `git-cherry-move [-f] [-b] [<origin/BRANCH>] <BRANCH> <CHERRY.. | LOCAL>`
 
 * `-f`              disable fetch step
 * `-b`              create a new branch BRANCH, rather than use an existing one
