@@ -1,2 +1,2 @@
 #!/bin/bash -e
-git-cherry-add -m "$@"
+git-cherry-copy -m "$@"
