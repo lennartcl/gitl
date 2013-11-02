@@ -122,7 +122,7 @@ if [ "$1" == local ] || [ "$1" == LOCAL ]; then
 else
   CHERRY=`git rev-parse "$@"`
   if [ $# == 1 ]; then
-    echo "$ git log --oneline--first-parent -1 $CHERRY"
+    echo "$ git log --oneline --first-parent -1 $CHERRY"
     git --no-pager log --oneline --color=never --first-parent -1 `git rev-parse "$@"`
     echo
   #else
