@@ -91,7 +91,7 @@ if [ "$FETCHERS" != "" ]; then
   if [ ! $NO_FETCH ]; then
     [ $PRINTED_FIRST ] && echo || PRINTED_FIRST=1
     if which git-list-pull-requests &>/dev/null && [ "$GITHUB_REPOS" ]; then
-      git list-pull-requests -a >/tmp/.git-out-requests &
+      git-list-pull-requests -a >/tmp/.git-out-requests &
       PULLS=$!
     else
       echo >/tmp/.git-out-requests &
