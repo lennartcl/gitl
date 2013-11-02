@@ -29,7 +29,9 @@ Get an overview of all outgoing branches:
     master
     2a6261b Something directly committed to master :)
 
-    new-feature (in upstream)
+    new-feature (in pull request)
+    aa01bb0 Commit something
+    bafeea0 Commit stuff
 
     nother-new-feature (not in upstream)
     a8ffaa0 Add mysterious new feature
@@ -47,30 +49,82 @@ Open a page about the current repository, file, or revision in your browser:
     $ git info -w README.md
     $ git info -w HEAD
 
-Installation
-------------
+Configuration
+-------------
 
 Just put these scripts on your PATH and they'll work.
-Instead of invoking a script directly, like `git-info`,
-you can also type `git info`.
+Instead of invoking a script directly, like 'git-info',
+you can also type 'git info'.
 
-If you like, you can get a fancy prompt with some extra
-info about the current branch using `git prompt`.
+If you want, you can use these scripts to customize your prompt.
+Just run `gitl-setup -p` to get a prompt that shows the current
+git branch and/or tag. 
+
+To use `git-list-pull-requests`, the `gitl-setup` command can create a
+github API key and show a list of settings to add to the `.profile`
+file in your home directory (only required for `git-list-pull-requests`;
+before you get into that I suggest you play around with the other
+commands!).
 
 Command Reference
 -----------------
 
 ### git-l
 
-Usage: `git l [BRANCH]`
+Quick log of the current branch, compared to origin/master.
 
-Quick log of the current or given branch, compared to origin/master.
+### git-pull-request
+
+Submit a GitHub pull request of the current or specified branch. Checks if it is still up-to-date using `git-is-current`, then opens your browser.
+
+Arguments:
+
+* `-f`       Don't fetch
+* `-o`       Open the page for an existing pull request
+* `BRANCH`   Request branch BRANCH
+
+### git-out
+
+Show an overview of all outgoing branches. Branches starting with `_` are not fully shown. 
+
+Arguments:
+
+* `-f`       Don't fetch
+* `BRANCH`   Only show branch BRANCH
+* `head`     Only show the current branch
+
+### git-list-pull-requests
+
+List all your open pull requests and shows if they are up-to-date 
+compared to master (using `git-is-current)`.
+
+Arguments:
+
+* `-f`             Don't fetch
+* `-q`             Be quiet
+* `-w`             Open a web page instead
+
+### git-is-current
+
+Determine if the current or specified branch is up-to-date compared to the current branch,
+or if merging the two branches would cause a conflict.
+
+Arguments:
+
+* `-f`             Don't fetch
+* `-q`             Be quiet
+* `origin/BRANCH`  Compare to branch origin/BRANCH instead of origin/master
+* `BRANCH`         Use selected branch
+
+### git-get-branch
+
+Show the current branch.
 
 ### git-cherry-copy
 
 Extends or creates a branch with a cherry picking range of commits or local changes.
 
-Usage: `git cherry-copy [-f] [-b] [<origin/BRANCH>] <BRANCH> <CHERRY.. | LOCAL>`
+Usage: `git-cherry-copy [-f] [-b] [<origin/BRANCH>] <BRANCH> <CHERRY.. | LOCAL>`
 
 * `-f`              disable fetch step
 * `-b`              create a new branch BRANCH, rather than use an existing one
@@ -85,7 +139,7 @@ Usage: `git cherry-copy [-f] [-b] [<origin/BRANCH>] <BRANCH> <CHERRY.. | LOCAL>`
 Extends or creates a branch with a cherry picking range of commits or local changes,
 moving them away from the current branch.
 
-Usage: `git cherry-move [-f] [-b] [<origin/BRANCH>] <BRANCH> <CHERRY.. | LOCAL>`
+Usage: `git-cherry-move [-f] [-b] [<origin/BRANCH>] <BRANCH> <CHERRY.. | LOCAL>`
 
 * `-f`              disable fetch step
 * `-b`              create a new branch BRANCH, rather than use an existing one
@@ -95,47 +149,18 @@ Usage: `git cherry-move [-f] [-b] [<origin/BRANCH>] <BRANCH> <CHERRY.. | LOCAL>`
 * `CHERRY`          a commit, a branch to pick the head from, or a range of commits [default: HEAD]
 * `LOCAL`           take uncommited changes instead of a range of commits
 
+### git-keep-alive
+
+Maintains an open connection to speed up github access. See http://coderrr.wordpress.com/2011/10/31/github-hack-speed-up-git-push-and-git-pull/.
+
 ### git-info
 
 Show information about the current repository or a path within the repository.
 
-Usage: `git info [-w] [PATH | REVISION]`
+Usage: `git-info [-w] [PATH | REVISION]`
 
 * `-w`             Open a web page in your browser
 * `PATH`           A path to show info for
-
-### git-is-current
-
-Determine if the current or specified branch is up-to-date compared to the current branch,
-or if merging the two branches would cause a conflict.
-
-Arguments:
-
-* `-f`             Don't fetch before comparison
-* `-q`             Be quiet
-* `origin/BRANCH`  Compare to branch origin/BRANCH instead of origin/master
-* `BRANCH`         Use selected branch
-
-### git-out
-
-Show an overview of all outgoing branches. Branches starting with `_` are not fully shown. 
-
-Arguments:
-
-* `-f`       Don't fetch
-* `BRANCH`   Only show branch BRANCH
-* `head`     Only show the current branch
-
-### git-pull-request
-
-Submit a GitHub pull request of the current or specified branch. Checks if it is
-still up-to-date using `git-is-current`, then opens your browser.
-
-Arguments:
-
-* `-f`       Don't fetch before doing a pull request (faster, can't guarantee it won't conflict)
-* `-o`       Open the page for an existing pull request
-* `BRANCH`   Request branch BRANCH
 
 License (MIT)
 -------------
