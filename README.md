@@ -52,7 +52,9 @@ Open a page about the current repository, file, or revision in your browser:
 Configuration
 -------------
 
-Just put these scripts on your PATH.
+Just put these scripts on your PATH and they'll work.
+Instead of invoking a script directly, like 'git-info',
+you can also type 'git info'.
 
 If you want, you can use these scripts to customize your prompt.
 Just run `gitl-setup -p` to get a prompt that shows the current
