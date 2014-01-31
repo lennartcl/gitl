@@ -35,8 +35,12 @@ fi
 ENC_BRANCH=`echo -n $BRANCH | sed 's/\//%2F/g'`
 
 
-REMOTE=`git remote -v | grep 'origin.*push' | grep -oE '(bitbucket.org|github.com)[:/][^/]+/[^ ]+' | sed -E 's/(.*)\.git/\1/'` ||
-(echo 'No remote for current directory' >&2 && exit 1)
+REMOTE=$(
+  git remote -v | grep 'origin.*push' \
+    | grep -oE '(bitbucket.org|github.com)[:/][^/]+/[^ ]+' \
+    | sed -E 's/(.*)\.git/\1/' \
+    | sed -E 's/(bitbucket.org|github.com):/\1\//' \
+) || (echo 'No remote for current directory' >&2 && exit 1)
 
 
 if [ ! "$REMOTE" ]; then
@@ -68,7 +72,7 @@ if echo $REMOTE | grep -q bitbucket.org; then
   if [ $OLD ]; then
     open "$URL/$BRANCH/branch"
   else
-    open "$URL/$BRANCH/pull-request/new"
+    open "$URL/$BRANCH/pull-request/new?source=$BRANCH"
   fi
 else
   USER=`echo $REMOTE | perl -pe 's|github.com.([^/]+)/.*|$1|'`
