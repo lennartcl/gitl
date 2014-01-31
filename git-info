@@ -12,7 +12,7 @@ if [ "$1" == "-w" ]; then
 fi
 
 REV=
-if [ "$1" != "" ] && git rev-parse "$1" &>/dev/null && [ ! -e "$1" ]; then
+if [ "$1" != "" ] && git rev-parse --verify "$1" &>/dev/null && [ ! -e "$1" ]; then
   REV=`git rev-parse $1`
   shift
 elif [ "$1" == "-r" ]; then
@@ -27,11 +27,15 @@ fi
 
 if [ "$1" == "" ]; then
   FILE=
-elif [ -d "$1" ]; then
-  cd "$1"
-  FILE=
 else
   FILE="$1"
+
+  FILE=`cd -P -- "$(dirname -- "$FILE")" && echo "$(pwd -P)/$(basename -- "$FILE")"`
+  while [ ! -e .git ] && [ "`pwd`" != "/" ]; do
+    cd ..
+  done
+  BASEPATH=`ls -d $(pwd -P)`
+  RELPATH=`echo "$FILE" | sed "s|$BASEPATH/||"`
 fi
 
 if ! git remote &>/dev/null; then
@@ -39,8 +43,13 @@ if ! git remote &>/dev/null; then
   FILE="`basename "$FILE"`"
 fi
 
-REMOTE=`git remote -v | grep 'origin.*push' | grep -oE 'github.com[:/][^/]+/[^ ]+' | sed -E 's/(.*)\.git/\1/'` ||
-(echo 'No remote for current directory' >&2 && exit 1)
+REMOTE=$(
+  git remote -v | grep 'origin.*push' \
+    | grep -oE '(bitbucket.org|github.com)[:/][^/]+/[^ ]+' \
+    | sed -E 's/(.*)\.git/\1/' \
+    | sed -E 's/(bitbucket.org|github.com):/\1\//' \
+) || (echo 'No remote for current directory' >&2 && exit 1)
+
 
 if [ ! "$REMOTE" ]; then
   echo Repository not recognized:
@@ -48,32 +57,43 @@ if [ ! "$REMOTE" ]; then
   exit 1
 fi
 
-USER=`echo $REMOTE | perl -pe 's|github.com.([^/]+)/.*|$1|'`
-REPO=`echo $REMOTE | perl -pe 's|github.com.[^/]+/(.*)|$1|'`
 BRANCH=`git-get-branch 2>/dev/null || git rev-parse HEAD`
+BRANCH_IN_URL=`echo $BRANCH | sed 's!/!%2F!g'`  
 
-FILE=`cd -P -- "$(dirname -- "$FILE")" && echo "$(pwd -P)/$(basename -- "$FILE")"`
-while [ ! -e .git ] && [ "`pwd`" != "/" ]; do
-  cd ..
-done
-BASEPATH=`ls -d $(pwd -P)`
-RELPATH=`echo "$FILE" | sed "s|$BASEPATH/||"`
-
-if [ -d "$FILE" ]; then
-  FILE=
-else
+if [ "$FILE" ] && [ ! -d "$FILE" ]; then
   git status "$FILE"
 fi
 
-if [ $REV ] && [ ! $FILE ]; then
-  URL="https://github.com/$USER/$REPO/commit/$REV"
-  DIFFURL=
-elif [ $REV ]; then
-  URL="https://github.com/$USER/$REPO/blob/$REV/$RELPATH"
-  DIFFURL="https://github.com/$URER/$REPO/compare/master...$REV"
+if echo $REMOTE | grep -q bitbucket.org; then
+  BASE_URL="https://$REMOTE"
+
+  if [ $REV ] && [ ! "$FILE" ]; then
+    URL="$BASE_URL/commits/$REV"
+    DIFFURL= # not supported
+  elif [ $REV ]; then
+    URL="$BASE_URL/src/$REV/$RELPATH?at=$BRANCH"
+    if [ ! -d "$FILE" ]; then
+      DIFFURL="$BASE_URL/diff/$RELPATH?diff1=master&diff2=$REV&at=$BRANCH"
+    fi
+  else
+    URL="$BASE_URL/src/$BRANCH_IN_URL/$RELPATH?at=$BRANCH"
+    DIFFURL="$BASE_URL/diff?diff1=master&diff2=$BRANCH"
+  fi
 else
-  URL="https://github.com/$USER/$REPO/blob/$BRANCH/$RELPATH"
-  DIFFURL="https://github.com/$USER/$REPO/compare/master...`echo $BRANCH | sed 's!/!%2F!g'`"
+  USER=`echo $REMOTE | perl -pe 's|github.com.([^/]+)/.*|$1|'`
+  REPO=`echo $REMOTE | perl -pe 's|github.com.[^/]+/(.*)|$1|'`
+  BASE_URL="https://github.com/$USER/$REPO"
+
+  if [ $REV ] && [ ! "$FILE" ]; then
+    URL="$BASE_URL/commit/$REV"
+    DIFFURL="$BASE_URL/compare/master...$REV"
+  elif [ $REV ]; then
+    URL="$BASE_URL/blob/$REV/$RELPATH"
+    DIFFURL= # not supported
+  else
+    URL="$BASE_URL/blob/$BRANCH_IN_URL/$RELPATH"
+    DIFFURL= # not supported
+  fi
 fi
 
 echo "# URL:"
