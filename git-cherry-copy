@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# git-add-cherry
+# git-cherry-copy
 #
 # License: MIT
 # Copyright (c) 2012 Lennart C. L. Kats
@@ -122,7 +122,7 @@ if [ "$1" == local ] || [ "$1" == LOCAL ]; then
 else
   CHERRY=`git rev-parse "$@"`
   if [ $# == 1 ]; then
-    echo "$ git log --oneline --first-parent -1 $CHERRY"
+    echo "$ git log --oneline --first-parent -1 $@"
     git --no-pager log --oneline --color=never --first-parent -1 `git rev-parse "$@"`
     echo
   #else
@@ -143,6 +143,24 @@ if [ $MAKE_NEW ]; then
   echo "$ git checkout $MASTER"
   git checkout -q $MASTER
   echo
+fi
+
+if ! ls `pwd` &>/dev/null; then
+  PREVPWD=`pwd`
+  while [ ! -e .git ] && [ "`pwd`" != "/" ]; do
+    cd ..
+  done
+  echo "$ git checkout $CURRENTBRANCH"
+  git checkout -q $CURRENTBRANCH
+  echo
+  if [ $STASH ]; then
+     echo '$ git stash pop'
+     git stash pop -q
+     echo
+  fi
+  echo "error: cannot execute this from directory `pwd` that only exists in the curent branch. Aborted."
+  cd $PREVPWD
+  exit 1
 fi
 
 echo "$ git checkout $BRANCH"
