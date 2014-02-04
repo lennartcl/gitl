@@ -70,9 +70,9 @@ fi
 if echo $REMOTE | grep -q bitbucket.org; then
   URL="https://$REMOTE"
   if [ $OLD ]; then
-    open "$URL/$BRANCH/branch"
+    open "$URL/src/$BRANCH"
   else
-    open "$URL/$BRANCH/pull-request/new?source=$BRANCH"
+    open "$URL/pull-request/new?source=$BRANCH"
   fi
 else
   USER=`echo $REMOTE | perl -pe 's|github.com.([^/]+)/.*|$1|'`
