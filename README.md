@@ -25,7 +25,7 @@ Create a pull request for the current branch:
 
 Get an overview of all outgoing branches:
 
-    $ git out
+    $ git out --all
     master
     2a6261b Something directly committed to master :)
 
@@ -122,9 +122,9 @@ Show an overview of all outgoing branches. Branches starting with `_` are not fu
 
 Arguments:
 
-* `-f`       Don't fetch
-* `BRANCH`   Only show branch BRANCH
-* `head`     Only show the current branch
+* `-a|--all`  Show all branches
+* `-f`        Don't fetch
+* `BRANCH`    Only show branch BRANCH
 
 ### git-pull-request
 

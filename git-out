@@ -6,28 +6,29 @@
 # Copyright (c) 2012 Lennart C. L. Kats
 
 QUIET=
-if [ "$1" == "-q" ]; then
-  QUIET=-q
-  shift
-fi
-
+NO_FETCH=
 FETCHED=
 FETCHERS=
-NO_FETCH=
-if [ "$1" == "-f" ]; then
-  NO_FETCH=-f
-  shift
-fi
+ALL=
 
-QUIET=
-if [ "$1" == "-q" ]; then
-  QUIET=-q
-  shift
-fi
+for P in "$@"; do
+  case $P in
+    "-q")
+      QUIET=-q
+      shift ;;
+    "-f")
+      NO_FETCH=-f
+      shift ;;
+    "-a|--all")
+      ALL=-a
+      shift ;;
+  esac
+done
 
 SELECTION="$@"
 
-if echo "$SELECTION" | grep -iE 'head|local' >/dev/null; then
+if echo "$SELECTION" | grep -iE 'head|local' >/dev/null \
+  || [ "$SELECTION" == "" ]; then
   SELECTION=`git-get-branch`
 fi
 
@@ -36,7 +37,7 @@ BRANCHES=`git branch --list $SELECTION | sed 's/\* //'`
 BRANCH=`git-get-branch 2>/dev/null` &&
   BRANCHES="`git-get-branch` `echo "$BRANCHES" | grep -Ev "^$BRANCH\$"`" || :
 
-function clearLine() {
+clearLine() {
     echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
     echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
     echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
