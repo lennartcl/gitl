@@ -13,13 +13,13 @@ ALL=
 
 for P in "$@"; do
   case $P in
-    "-q")
+    -q)
       QUIET=-q
       shift ;;
-    "-f")
+    -f)
       NO_FETCH=-f
       shift ;;
-    "-a|--all")
+    -a|--all)
       ALL=-a
       shift ;;
   esac
