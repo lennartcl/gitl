@@ -29,9 +29,11 @@ Get an overview of all outgoing branches:
     master
     2a6261b Something directly committed to master :)
 
-    new-feature (in upstream)
+    feature-x
+    8a8ffa1 Done. Going to bed now.
+    644abff WIP
 
-    nother-new-feature (not in upstream)
+    feature-y
     a8ffaa0 Add mysterious new feature
 
 Move the last commit into a separate feature branch and 

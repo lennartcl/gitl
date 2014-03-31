@@ -28,7 +28,7 @@ done
 SELECTION="$@"
 
 if echo "$SELECTION" | grep -iE 'head|local' >/dev/null \
-  || [ "$SELECTION" == "" ]; then
+  || ([ "$SELECTION" == "" ] && ! [ "$ALL " ]); then
   SELECTION=`git-get-branch`
 fi
 
@@ -67,7 +67,7 @@ for BRANCH in $BRANCHES; do
     if [ "$LOG" == "" ]; then
       echo -e "\033[09;32m$BRANCH\033[00m (empty)"
     else
-      echo -e "\033[01;32m$BRANCH\033[00m (not in upstream)"
+      echo -e "\033[01;32m$BRANCH\033[00m"
       if [ $QUIET ]; then
         echo "`echo "$LOG" | wc -l` commit(s)"
       else
@@ -117,7 +117,7 @@ if [ "$FETCHERS" != "" ]; then
           echo -e "$BRANCH (in pull request)"
           git is-current -f -q $BRANCH
         else
-          echo -e "\033[01;32m$BRANCH\033[00m (in upstream, not in master or beta)"
+          echo -e "\033[01;32m$BRANCH\033[00m (unmerged in origin/master)"
         fi
       fi
     fi
