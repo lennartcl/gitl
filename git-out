@@ -30,7 +30,7 @@ done
 SELECTION="$@"
 
 if echo "$SELECTION" | grep -iE 'head|local' >/dev/null \
-  || ([ "$SELECTION" == "" ] && ! [ "$ALL " ]); then
+  || ([ "$SELECTION" == "" ] && ! [ "$ALL" ]); then
   SELECTION=`git-get-branch`
 fi
 
