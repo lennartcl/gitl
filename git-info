@@ -1,9 +1,11 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
 #
 # git-info
 #
 # License: MIT
 # Copyright (c) 2012 Lennart C. L. Kats
+
+set -e
 
 WEB=
 if [ "$1" == "-w" ]; then

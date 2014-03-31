@@ -1,9 +1,11 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
 #
 # git-is-current
 #
 # License: MIT
 # Copyright (c) 2012 Lennart C. L. Kats
+
+set -e
 
 # Internal config
 USE_BETA=0

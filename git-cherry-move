@@ -1,2 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
+
 git-cherry-copy -m "$@"

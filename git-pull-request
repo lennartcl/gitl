@@ -1,9 +1,11 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
 #
 # git-pull-request
 #
 # License: MIT
 # Copyright (c) 2012 Lennart C. L. Kats
+
+set -e
 
 OLD=
 NO_FETCH=
