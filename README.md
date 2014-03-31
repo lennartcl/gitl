@@ -3,7 +3,7 @@ gitl
 
 `gitl` is a collection of command-line git & github scripts.
 Most of these scripts operate fully in the command-line, but some
-of them can interact with github.com to open a pull request, or
+of them can interact with github/bitbucket to open a pull request, or
 display some information about an item in the repository.
 
 Examples
@@ -21,7 +21,7 @@ Get a quick list of recent unpushed commits in the current branch:
 Create a pull request for the current branch:
 
     $ git pull-request
-    # (opens your browser)
+    # (opens your browser with github.com or bitbucket.org)
 
 Get an overview of all outgoing branches:
 
