@@ -67,7 +67,7 @@ for BRANCH in $BRANCHES; do
     continue
   fi
   REVISION=`git rev-parse $BRANCH`
-  if echo $GIT_OUT_CACHE | grep -q $REVISION; then
+  if [[ "$GIT_OUT_CACHE" =~ "$REVISION" ]]; then
     continue
   elif ! git log -1 --oneline origin/$BRANCH &> /dev/null; then
     LOG=`git log --oneline --first-parent $BRANCH --not --remotes=origin`
