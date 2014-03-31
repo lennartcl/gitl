@@ -9,7 +9,7 @@ display some information about an item in the repository.
 Examples
 --------
 
-Get a quick list of recent unpushed commits in the current branch:
+Get a quick list of recent non-master commits in the current branch:
 
     $ git l
     dac6cc8 Fix git-bc <BRANCH> LOCAL
@@ -23,11 +23,17 @@ Create a pull request for the current branch:
     $ git pull-request
     # (opens your browser with github.com or bitbucket.org)
 
+Open a web page about the current repository, file, or revision in your browser:
+
+    $ git info -w
+    $ git info -w README.md
+    $ git info -w HEAD
+
 Get an overview of all outgoing branches:
 
     $ git out --all
     master
-    2a6261b Something directly committed to master :)
+    2a6261b Something directly committed to master :o
 
     feature-x
     8a8ffa1 Done. Going to bed now.
@@ -42,12 +48,6 @@ file a pull request for it:
     $ git cherry-move -b my-new-feature HEAD
     $ git pull-request my-new-feature
     # (opens your browser)
-
-Open a page about the current repository, file, or revision in your browser:
-
-    $ git info -w
-    $ git info -w README.md
-    $ git info -w HEAD
 
 Installation
 ------------
