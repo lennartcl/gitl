@@ -88,10 +88,14 @@ else
     URL="$BASE_URL/commit/$REV"
     DIFFURL="$BASE_URL/compare/master...$REV"
   elif [ $REV ]; then
-    URL="$BASE_URL/blob/$REV/$RELPATH"
+    if [ -d "$FILE" ]; then
+      URL="$BASE_URL/tree/$REV/$RELPATH"
+    else
+      URL="$BASE_URL/blob/$REV/$RELPATH"
+    fi
     DIFFURL= # not supported
   else
-    URL="$BASE_URL/blob/$BRANCH_IN_URL/$RELPATH"
+    URL="$BASE_URL/tree/$BRANCH_IN_URL/$RELPATH"
     DIFFURL= # not supported
   fi
 fi
