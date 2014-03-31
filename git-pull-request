@@ -67,6 +67,20 @@ if [ ! $OLD ] && ! git-is-current -q $NO_FETCH $BRANCH; then
   fi
 fi
 
+open() {
+    if which -s start && ! [[ `uname -s` =~ Darwin|Linux ]]; then
+      start "$1"
+    elif which -s xdg-open && ! [[ `uname -s` =~ Darwin ]]; then
+      xdg-open "$1"
+    elif which -s gnome-open && ! [[ `uname -s` =~ Darwin ]]; then
+      gnome-open "$1"
+    elif which -s kde-open && ! [[ `uname -s` =~ Darwin ]]; then
+      kde-open "$1"
+    else
+      command open "$1"
+    fi
+}
+
 if echo $REMOTE | grep -q bitbucket.org; then
   URL="https://$REMOTE"
   if [ $OLD ]; then
