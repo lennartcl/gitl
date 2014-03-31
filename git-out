@@ -55,13 +55,21 @@ if [ ! $NO_FETCH ]; then
   FETCHER=$!
 fi
 
+while [ ! -e .git ] && [ "`pwd`" != "/" ]; do
+  cd ..
+done
+GIT_OUT_CACHE=`cat .git/git-out-cache || echo`
+
 PRINTED_FIRST=
 for BRANCH in $BRANCHES; do
   if echo $BRANCH | grep '^_' >/dev/null || [ "$BRANCH" == "(no" ] ||
      [ "$BRANCH" == "branch)" ]; then
     continue
   fi
-  if ! git show --oneline origin/$BRANCH &> /dev/null; then
+  REVISION=`git rev-parse $BRANCH`
+  if echo $GIT_OUT_CACHE | grep -q $REVISION; then
+    continue
+  elif ! git log -1 --oneline origin/$BRANCH &> /dev/null; then
     LOG=`git log --oneline --first-parent $BRANCH --not --remotes=origin`
     [ $PRINTED_FIRST ] && echo || PRINTED_FIRST=1
     if [ "$LOG" == "" ]; then
@@ -85,6 +93,8 @@ for BRANCH in $BRANCHES; do
     fi
   elif [ "`git log origin/master..$BRANCH 2>/dev/null`" != "" ]; then
     FETCHERS="$FETCHERS $BRANCH"
+  else
+    echo $REVISION >> .git/git-out-cache
   fi
 done
 
