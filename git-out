@@ -60,7 +60,7 @@ fi
 while [ ! -e .git ] && [ "`pwd`" != "/" ]; do
   cd ..
 done
-GIT_OUT_CACHE=`cat .git/git-out-cache || echo`
+GIT_OUT_CACHE=`cat .git/git-out-cache 2>/dev/null || echo`
 
 PRINTED_FIRST=
 for BRANCH in $BRANCHES; do
