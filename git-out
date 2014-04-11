@@ -27,11 +27,13 @@ for P in "$@"; do
   esac
 done
 
+MYBRANCH=
 SELECTION="$@"
 
 if echo "$SELECTION" | grep -iE 'head|local' >/dev/null \
   || ([ "$SELECTION" == "" ] && ! [ "$ALL" ]); then
   SELECTION=`git-get-branch`
+  MYBRANCH=1
 fi
 
 BRANCHES=`git branch --list $SELECTION | sed 's/\* //'`
@@ -77,7 +79,9 @@ for BRANCH in $BRANCHES; do
     if [ "$LOG" == "" ]; then
       echo -e "\033[09;32m$BRANCH\033[00m (empty)"
     else
-      echo -e "\033[01;32m$BRANCH\033[00m"
+      if [ ! $MYBRANCH ]; then
+        echo -e "\033[01;32m$BRANCH\033[00m"
+      fi
       if [ $QUIET ]; then
         echo "`echo "$LOG" | wc -l` commit(s)"
       else
@@ -87,7 +91,9 @@ for BRANCH in $BRANCHES; do
   elif [ "`git log origin/$BRANCH..$BRANCH 2>/dev/null`" != "" ]; then
     [ $PRINTED_FIRST ] && echo || PRINTED_FIRST=1
     LOG=`git log --oneline --first-parent $BRANCH --not --remotes=origin`
-    echo -e "\033[01;32m$BRANCH\033[00m"
+    if [ ! $MYBRANCH ]; then
+      echo -e "\033[01;32m$BRANCH\033[00m"
+    fi
     if [ $QUIET ]; then
       echo "`echo "$LOG" | wc -l` commit(s)"
     else
