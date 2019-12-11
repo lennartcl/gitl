@@ -26,6 +26,6 @@ else
   fi
 fi
 
-if [ "$1" == "-p" ] && git describe --tag --exact-match &>/dev/null; then
+if [ "$1" == "-p" ] && [ "$2" != "--no-tag" ] && git describe --tag --exact-match &>/dev/null; then
   echo -n ' @ '`git describe --tag --exact-match`
 fi
